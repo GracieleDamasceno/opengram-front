@@ -9,27 +9,27 @@ export default class SignUp extends React.Component {
 
                 <div className="form-group">
                     <label>First name</label>
-                    <input type="text" className="form-control" placeholder="First name" />
+                    <input type="text" className="form-control" id="firstName" placeholder="First name" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Last name</label>
-                    <input type="text" className="form-control" placeholder="Last name" />
+                    <input type="text" className="form-control" id="lastName" placeholder="Last name" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Email</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
+                    <input type="email" className="form-control" id="email" placeholder="Enter email" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Username</label>
-                    <input type="text" className="form-control" placeholder="Enter username" />
+                    <input type="text" className="form-control" id="username" placeholder="Enter username" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" />
+                    <input type="password" className="form-control" id="password" placeholder="Enter password" />
                 </div>
                 <hr></hr>
                 <button type="submit" className="btn btn-primary btn-lg btn-block text-right">Register</button>
