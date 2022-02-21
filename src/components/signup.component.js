@@ -1,41 +1,102 @@
 import React from 'react';
+import api from '../services/Api';
+import { Navigate } from "react-router-dom";
 
 export default class SignUp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {firstName: "", lastName: "", username: "", email: "", password: "", successfulSignUp: false};
+        this.onChangeFirstName = this.onChangeFirstName.bind(this);
+        this.onChangeLastName = this.onChangeLastName.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+    onChangeFirstName(e) {
+        this.setState({ firstName: e.target.value })
+    }
+    onChangeLastName(e) {
+        this.setState({ lastName: e.target.value })
+    }
+    onChangeUsername(e) {
+        this.setState({ username: e.target.value })
+    }
+    onChangeEmailAddress(e) {
+        this.setState({ email: e.target.value })
+    }
+    onChangePassword(e) {
+        this.setState({ password: e.target.value })
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+        
+        const userLoginObject = {
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        const sendGetRequest = async () => {
+            try {
+                const resp = await api.post("/account/join", userLoginObject);
+                if(resp.status === 202){
+                    alert("You are successfully registered!");
+                    this.setState({ successfulSignUp: true });
+                } else {
+                    alert(resp.data.error)
+                    this.setState({ successfulSignUp: false });
+                }
+            } catch (error) {
+                this.setState({ errorMessage: error.message });
+                console.error('There was an error!', error);
+            }
+        };       
+
+        sendGetRequest();
+        
+        this.setState({firstName:"", lastName:"", username:"", email: "", password: ""});
+    }
+
     render() {
+        if(this.state.successfulSignUp){
+            return <Navigate to = {{ pathname: "/sign-in" }} />;
+        }
         return (
-            <form>
+            <form onSubmit={this.onSubmit}>
                 <h3>Register</h3>
                 <hr></hr>
 
                 <div className="form-group">
                     <label>First name</label>
-                    <input type="text" className="form-control" id="firstName" placeholder="First name" />
+                    <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Last name</label>
-                    <input type="text" className="form-control" id="lastName" placeholder="Last name" />
+                    <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Email</label>
-                    <input type="email" className="form-control" id="email" placeholder="Enter email" />
+                    <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Username</label>
-                    <input type="text" className="form-control" id="username" placeholder="Enter username" />
+                    <input type="text" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" />
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Password</label>
-                    <input type="password" className="form-control" id="password" placeholder="Enter password" />
+                    <input type="password" value={this.state.password} onChange={this.onChangePassword}  className="form-control" id="password" placeholder="Enter password" />
                 </div>
                 <hr></hr>
-                <button type="submit" className="btn btn-primary btn-lg btn-block text-right">Register</button>
-                <p className="forgot-password text-right">
-                    Already registered <a href="#">log in?</a>
-                </p>
+                <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
+                <p className="forgot-password text-right"> Already registered? <a href="#">Log in</a></p>
             </form>
         );
     }
