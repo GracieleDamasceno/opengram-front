@@ -42,7 +42,7 @@ export default class SignUp extends React.Component {
 
         const sendGetRequest = async () => {
             try {
-                const resp = await api.post("/account/join", userLoginObject);
+                const resp = await api.post("/account/join", userLoginObject);     
                 if(resp.status === 202){
                     alert("You are successfully registered!");
                     this.setState({ successfulSignUp: true });
@@ -72,31 +72,31 @@ export default class SignUp extends React.Component {
 
                 <div className="form-group">
                     <label>First name</label>
-                    <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" />
+                    <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" required/>
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Last name</label>
-                    <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" />
+                    <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" required/>
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Email</label>
-                    <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" />
+                    <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Username</label>
-                    <input type="text" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" />
+                    <input type="text" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" required/>
                 </div>
 
                 <div className="form-group mt-2">
                     <label>Password</label>
-                    <input type="password" value={this.state.password} onChange={this.onChangePassword}  className="form-control" id="password" placeholder="Enter password" />
+                    <input type="password" value={this.state.password} onChange={this.onChangePassword}  className="form-control" id="password" placeholder="Enter password" required/>
                 </div>
                 <hr></hr>
                 <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
-                <p className="forgot-password text-right"> Already registered? <a href="#">Log in</a></p>
+                <p className="forgot-password text-right"> Already registered? <a href="/sign-in">Log in</a></p>
             </form>
         );
     }

@@ -73,3 +73,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 ## `npm install bootstrap --save `
 ## `npm install react-router-dom --save`
+## `npm install axios --save`
+## `npm install react-session-api --save`
+## `npm install js-cookie --save`

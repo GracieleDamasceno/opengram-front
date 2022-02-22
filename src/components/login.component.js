@@ -1,6 +1,8 @@
 import React from 'react';
 import api from '../services/Api';
 import { Navigate } from "react-router-dom";
+import Session from 'react-session-api'
+import Cookies from 'js-cookie'
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -20,7 +22,6 @@ export default class Login extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        
         const userLoginObject = {
             email: this.state.email,
             password: this.state.password
@@ -30,12 +31,14 @@ export default class Login extends React.Component {
             try {
                 const resp = await api.post("/account/sign-in", userLoginObject);
                 if(resp.status === 200){
-                    alert("You are in "+ resp.data.username)
+                    Session.set("firstName", resp.data.firstName);
+                    Session.set("lastName", resp.data.lastName);
+                    Session.set("username", resp.data.username);
+                    Session.set("email", resp.data.email);
                     this.setState({ isSignedUp: true });
                 }else{
                     this.setState({ isSignedUp: false });
                 }
-                console.log(resp.data);
             } catch (error) {
                 this.setState({ errorMessage: error.message });
                 console.error('There was an error!', error);
@@ -58,12 +61,12 @@ export default class Login extends React.Component {
                     <hr></hr>
                     <div className="form-group">
                         <label>Email</label>
-                        <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" />
+                        <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
                     </div>
 
                     <div className="form-group mt-2">
                         <label>Password</label>
-                        <input type="password" value={this.state.password} onChange={this.onChangePassword} className="form-control" id="password" placeholder="Enter password" />
+                        <input type="password" value={this.state.password} onChange={this.onChangePassword} className="form-control" id="password" placeholder="Enter password" required/>
                     </div>
 
                     <div className="form-group mt-2">
@@ -76,9 +79,7 @@ export default class Login extends React.Component {
                     <div className="form-group mt-2">
                         <button type="submit" className="btn btn-success btn-lg float-right">Sign in</button>
                     </div>
-                    <p className="forgot-password text-right">
-                        Forgot <a href="#">password?</a>
-                    </p>
+                    <p className="forgot-password text-right">Forgot <a href="#">password?</a></p>
                 </form>
             </div>
         );
