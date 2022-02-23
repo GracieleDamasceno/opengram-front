@@ -4,15 +4,22 @@ import { Navigate } from "react-router-dom";
 
 
 export default class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isSignedUp: true };
+}
  
-  onLogout(e){
+  onLogout = e =>{
     e.preventDefault();
     console.log("Logging out");
     Session.clear();
-    return <Navigate to="/sign-in" />
+    this.setState({ isSignedUp: false });
   }
 
   render() {
+    if(!this.state.isSignedUp){
+      return <Navigate to = {{ pathname: "/sign-in" }} />;
+  }
     return (
       <div>
         <h1>Profile</h1>

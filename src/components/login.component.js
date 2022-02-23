@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import Session from 'react-session-api'
 import Cookies from 'js-cookie'
 
+
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -30,18 +31,17 @@ export default class Login extends React.Component {
         const sendGetRequest = async () => {
             try {
                 const resp = await api.post("/account/sign-in", userLoginObject);
-                if(resp.status === 200){
-                    Session.set("firstName", resp.data.firstName);
-                    Session.set("lastName", resp.data.lastName);
-                    Session.set("username", resp.data.username);
-                    Session.set("email", resp.data.email);
-                    this.setState({ isSignedUp: true });
-                }else{
-                    this.setState({ isSignedUp: false });
-                }
+                Session.set("firstName", resp.data.firstName);
+                Session.set("lastName", resp.data.lastName);
+                Session.set("username", resp.data.username);
+                Session.set("email", resp.data.email);
+                this.setState({ isSignedUp: true });
             } catch (error) {
-                this.setState({ errorMessage: error.message });
-                console.error('There was an error!', error);
+                if(error.response.status === 401){
+                    alert("Wrong password or e-mail address!");
+                }else if(error.response.status === 500){
+                    alert("Something went wrong on our side. Please, try again later.");
+                }
             }
         };       
 

@@ -51,8 +51,11 @@ export default class SignUp extends React.Component {
                     this.setState({ successfulSignUp: false });
                 }
             } catch (error) {
-                this.setState({ errorMessage: error.message });
-                console.error('There was an error!', error);
+                if(error.response.status === 409){
+                    alert(error.response.data.error)
+                }else if(error.response.status === 500){
+                    alert("Something went wrong on our side. Please, try again later.");
+                }
             }
         };       
 
