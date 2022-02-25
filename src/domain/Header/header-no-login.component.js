@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
     return(
-        <div className="navigation">
+        <div className="navigation pb-5">
             <nav className="navbar navbar-expand-lg navbar-light fixed-top">
                 <div className="container">
                 <Link className="navbar-brand" to={"/sign-in"}>Opengram</Link>

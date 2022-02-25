@@ -1,6 +1,7 @@
 import React from 'react';
 import api from '../services/Api';
 import { Navigate } from "react-router-dom";
+import Header from "../domain/Header/header-no-login.component.js"
 
 export default class SignUp extends React.Component {
     constructor(props) {
@@ -69,38 +70,43 @@ export default class SignUp extends React.Component {
             return <Navigate to = {{ pathname: "/sign-in" }} />;
         }
         return (
-            <form onSubmit={this.onSubmit}>
-                <h3>Register</h3>
-                <hr></hr>
+        <div className="outer">
+            <Header />
+            <div className="inner">
+                <form onSubmit={this.onSubmit}>
+                    <h3>Register</h3>
+                    <hr></hr>
 
-                <div className="form-group">
-                    <label>First name</label>
-                    <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" required/>
-                </div>
+                    <div className="form-group">
+                        <label>First name</label>
+                        <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" required/>
+                    </div>
 
-                <div className="form-group mt-2">
-                    <label>Last name</label>
-                    <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" required/>
-                </div>
+                    <div className="form-group mt-2">
+                        <label>Last name</label>
+                        <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" required/>
+                    </div>
 
-                <div className="form-group mt-2">
-                    <label>Email</label>
-                    <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
-                </div>
+                    <div className="form-group mt-2">
+                        <label>Email</label>
+                        <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
+                    </div>
 
-                <div className="form-group mt-2">
-                    <label>Username</label>
-                    <input type="text" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" required/>
-                </div>
+                    <div className="form-group mt-2">
+                        <label>Username</label>
+                        <input type="text" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" required/>
+                    </div>
 
-                <div className="form-group mt-2">
-                    <label>Password</label>
-                    <input type="password" value={this.state.password} onChange={this.onChangePassword}  className="form-control" id="password" placeholder="Enter password" required/>
-                </div>
-                <hr></hr>
-                <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
-                <p className="forgot-password text-right"> Already registered? <a href="/sign-in">Log in</a></p>
-            </form>
+                    <div className="form-group mt-2">
+                        <label>Password</label>
+                        <input type="password" value={this.state.password} onChange={this.onChangePassword}  className="form-control" id="password" placeholder="Enter password" required/>
+                    </div>
+                    <hr></hr>
+                    <button type="submit" className="btn btn-primary btn-lg btn-block">Register</button>
+                    <p className="forgot-password text-right"> Already registered? <a href="/sign-in">Log in</a></p>
+                </form>
+            </div>
+        </div>
         );
     }
 }
