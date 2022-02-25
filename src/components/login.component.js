@@ -1,9 +1,9 @@
 import React from 'react';
 import api from '../services/Api';
 import { Navigate } from "react-router-dom";
-import Session from 'react-session-api'
-import Cookies from 'js-cookie'
+import Session from 'react-session-api';
 
+Session.config({ browserStorage: true, timeout: 1440 });
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -31,6 +31,7 @@ export default class Login extends React.Component {
         const sendGetRequest = async () => {
             try {
                 const resp = await api.post("/account/sign-in", userLoginObject);
+                Session.set("id", resp.data.userId);
                 Session.set("firstName", resp.data.firstName);
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
