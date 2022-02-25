@@ -9,7 +9,7 @@ Session.config({ browserStorage: true, timeout: 1440 });
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {email: "", password: ""};
+        this.state = {email: "", password: "", isSignedUp: false};
         this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -37,6 +37,7 @@ export default class Login extends React.Component {
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
                 Session.set("email", resp.data.email);
+                this.setState({ isSignedUp: true });
             } catch (error) {
                 if(error.response.status === 401){
                     alert("Wrong password or e-mail address!");
@@ -52,7 +53,7 @@ export default class Login extends React.Component {
     }
 
     render() {
-        if (Object.keys(Session.items()).length > 0){
+        if(this.state.isSignedUp){
             return <Navigate to = {{ pathname: "/profile" }} />;
         }
         return (

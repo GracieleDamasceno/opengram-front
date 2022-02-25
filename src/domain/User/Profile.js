@@ -2,7 +2,6 @@ import React from 'react';
 import Session from 'react-session-api'
 import Header from '../Header/header.component';
 
-
 export default class Profile extends React.Component {
   render() {
     return (
