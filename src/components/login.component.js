@@ -9,7 +9,13 @@ Session.config({ browserStorage: true, timeout: 1440 });
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {email: "", password: "", isSignedUp: false};
+        if(Object.keys(Session.items()).length > 0){
+            this.state = {email: "", password: "", isSignedUp: true};
+
+        } else {
+            this.state = {email: "", password: "", isSignedUp: false};
+
+        }
         this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);

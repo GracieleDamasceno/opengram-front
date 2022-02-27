@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Login from "./components/login.component";
 import SignUp from "./components/signup.component";
 import Profile from "./domain/User/Profile.js"
+import UpdateProfile from "./domain/User/UpdateProfile.js"
 
 function App() {  
   return (<Router>
@@ -14,6 +15,7 @@ function App() {
             <Route path="/sign-in" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/update-profile" element={<UpdateProfile />} />
           </Routes>
     </div></Router>
   );
