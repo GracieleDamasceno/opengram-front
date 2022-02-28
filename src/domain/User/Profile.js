@@ -19,7 +19,7 @@ export default class Profile extends React.Component {
                           <div className="media-body mb-5">
                               <h4 className="mt-0 mb-0 fw-bold text-white">{Session.get("firstName")} {Session.get("lastName")}</h4>
                               <p className="small mb-4 text-white">@{Session.get("username")}</p>
-                              <a href="#" className="mb-5 btn btn-outline-light btn-sm btn-block">Edit profile</a>
+                              <a href="/update-profile" className="mb-5 btn btn-outline-light btn-sm btn-block">Edit profile</a>
                           </div>
                         </div>
                     </div>
@@ -39,7 +39,9 @@ export default class Profile extends React.Component {
                     <div className="px-4 py-3 pb-4">
                       <div className="row">
                           <div className="col-1"></div>
-                            <div className="col-10 align-middle p-4 rounded shadow">
+                            <div className="col-10 p-4 rounded shadow">
+                              <h5 className="mb-2">About @{Session.get("username")}:</h5>
+                              <br></br>
                               <p>
                                 This is a text about me. I am very cool and friendly!
                                 <br></br>👩🏽‍💻 Software Developer
