@@ -11,7 +11,7 @@ export default class Profile extends React.Component {
           <div className="col"></div>
             <div className="col-8">
                 <div className="bg-white shadow rounded overflow-hidden">
-                    <div className="px-2 pt-1 pb-4 cover bg-info cover-image" style={{ backgroundSize: "cover", backgroundRepeat: "no-repeat" , position:"relative"}}>
+                    <div className="px-4 pt-1 pb-2 cover bg-info cover-image" style={{ backgroundSize: "cover", backgroundRepeat: "no-repeat" , position:"relative"}}>
                         <div className="row media align-items-end profile-head" style={{ transform: "translateY(5rem)" }}>
                         <div className="profile mr-3">
                           <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" className="rounded mb-2 img-thumbnail"></img>
@@ -22,37 +22,35 @@ export default class Profile extends React.Component {
                               <a href="/update-profile" className="mb-5 btn btn-outline-light btn-sm btn-block">Edit profile</a>
                           </div>
                         </div>
+                          <div className="p-1 d-flex justify-content-end text-center text-white ">
+                          <ul className="list-inline">
+                              <li className="list-inline-item">
+                                  <h5 className="font-weight-bold mb-0 d-block">215</h5><small className="text-muted"> <i className="fas fa-image mr-1"></i>Photos</small>
+                              </li>
+                              <li className="list-inline-item">
+                                  <h5 className="font-weight-bold mb-0 d-block">745</h5><small className="text-muted"> <i className="fas fa-user mr-1"></i>Followers</small>
+                              </li>
+                              <li className="list-inline-item">
+                                  <h5 className="font-weight-bold mb-0 d-block">340</h5><small className="text-muted"> <i className="fas fa-user mr-1"></i>Following</small>
+                              </li>
+                          </ul>
+                      </div>
                     </div>
-                    <div className="p-4 d-flex justify-content-end text-center">
-                        <ul className="list-inline mb-0">
-                            <li className="list-inline-item">
-                                <h5 className="font-weight-bold mb-0 d-block">215</h5><small className="text-muted"> <i className="fas fa-image mr-1"></i>Photos</small>
-                            </li>
-                            <li className="list-inline-item">
-                                <h5 className="font-weight-bold mb-0 d-block">745</h5><small className="text-muted"> <i className="fas fa-user mr-1"></i>Followers</small>
-                            </li>
-                            <li className="list-inline-item">
-                                <h5 className="font-weight-bold mb-0 d-block">340</h5><small className="text-muted"> <i className="fas fa-user mr-1"></i>Following</small>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="px-4 py-3 pb-4">
+                    <div className="px-4 mb-4 py-3 pb-4 mt-5">
                       <div className="row">
-                          <div className="col-1"></div>
-                            <div className="col-10 p-4 rounded shadow">
-                              <h5 className="mb-2">About @{Session.get("username")}:</h5>
-                              <br></br>
-                              <p>
-                                This is a text about me. I am very cool and friendly!
-                                <br></br>👩🏽‍💻 Software Developer
-                                📚 Book worm 
-                                🎬 Movie enthusiast 
-                                🎧 Music lover 
-                                🥔 Couch potato 
-                              </p>
-                            </div>
-                            <div className="col-1"></div>
+                        <div className="col-1"></div>
+                          <div className="col-10 p-4 shadow-lg bg-body rounded">
+                            <p>
+                              This is a text about me. I am very cool and friendly!
+                              <br></br>👩🏽‍💻 Software Developer
+                              📚 Book worm 
+                              🎬 Movie enthusiast 
+                              🎧 Music lover 
+                              🥔 Couch potato 
+                            </p>
                           </div>
+                          <div className="col-1"></div>
+                        </div>
                     </div>
                     <hr></hr>
                     <div className="py-4 px-4">
