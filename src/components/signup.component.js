@@ -76,7 +76,6 @@ export default class SignUp extends React.Component {
                 <form onSubmit={this.onSubmit}>
                     <h3>Register</h3>
                     <hr></hr>
-
                     <div className="form-group">
                         <label>First name</label>
                         <input type="text" value={this.state.firstName} onChange={this.onChangeFirstName} className="form-control" id="firstName" placeholder="First name" required/>

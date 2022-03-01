@@ -19,7 +19,7 @@ export default class Profile extends React.Component {
                           <div className="media-body mb-5">
                               <h4 className="mt-0 mb-0 fw-bold text-white">{Session.get("firstName")} {Session.get("lastName")}</h4>
                               <p className="small mb-4 text-white">@{Session.get("username")}</p>
-                              <a href="/update-profile" className="mb-5 btn btn-outline-light btn-sm btn-block">Edit profile</a>
+                              <a href="/update-profile" className="mb-5 btn btn-outline-light btn-sm btn-block">Update profile</a>
                           </div>
                         </div>
                           <div className="p-1 d-flex justify-content-end text-center text-white ">

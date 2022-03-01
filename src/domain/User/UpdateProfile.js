@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
                 <div className="row justify-content-md-center">
                     <div className="col-8">
                         <form className="mt-5 mb-5">
-                            <h3 className="fw-bold">Update Profile</h3>
+                            <h4 className="fw-bold">Update Profile</h4>
                             <hr></hr>
                             <br></br>
                             <div className="mb-3">
