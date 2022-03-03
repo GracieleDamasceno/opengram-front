@@ -1,9 +1,66 @@
 import React from 'react';
-import Session from 'react-session-api'
+import Session from 'react-session-api';
+import { Navigate } from "react-router-dom";
 import Header from '../Header/header.component';
+import api from '../../services/Api';
+import { useFormik} from 'formik';
+import * as Yup from 'yup';
+import * as moment from 'moment';
 
-export default class Profile extends React.Component {
-  render() {
+const UpdateProfile = () => {
+    const formik = useFormik({
+        initialValues: {
+            id: Session.get("id"),
+            email: Session.get("email"), 
+            firstName: Session.get("firstName"), 
+            lastName: Session.get("lastName"), 
+            username: Session.get("username"), 
+            birthday: Session.get("birthday"),
+            about: Session.get("about"), 
+            profilePhoto: "", 
+            coverPhoto: "",
+            wasUpdated: false,
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .email('Invalid email address')
+                .required('Required'),
+            firstName: Yup.string()
+                .max(15, 'Must be 15 characters or less')
+                .required('Required'),
+            lastName: Yup.string()
+                .max(20, 'Must be 20 characters or less')
+                .required('Required'),
+            username: Yup.string()
+                .max(30, 'Username must be 30 characters or less')
+                .required('Required'),
+            birthday: Yup.date()
+                .min(new Date(1900, 0, 1)),
+            about: Yup.string()
+                .max(250, 'Must be 250 characters or less'),
+        }),
+        onSubmit: async (values) => {
+            try{
+                const update = await api.patch("/profile/update", values);
+                Session.set("firstName", update.data.firstName);
+                Session.set("lastName", update.data.lastName);
+                Session.set("username", update.data.username);
+                Session.set("email", update.data.email);
+                Session.set("about", update.data.about);
+                Session.set("birthday", update.data.birthday);
+                alert("Profile successfully updated!");
+                formik.values.wasUpdated = true;
+            }catch (error) {
+                if(error.response.status === 500){
+                    alert("Something went wrong on our side. Please, try again later.");
+                }
+            }
+        },
+      });
+
+    if(formik.values.wasUpdated){
+        return <Navigate to = {{ pathname: "/profile" }} />;
+    }
     return (
       <div className="container-fluid">
         <Header/>
@@ -11,58 +68,64 @@ export default class Profile extends React.Component {
           <div className="col"></div>
             <div className="col-8 bg-white shadow rounded">
                 <div className="row justify-content-md-center">
-                    <div className="col-8">
-                        <form className="mt-5 mb-5">
+                    <div className="col-6">
+                        <form className="mt-5 mb-5" onSubmit={formik.handleSubmit}>
                             <h4 className="fw-bold">Update Profile</h4>
                             <hr></hr>
                             <br></br>
                             <div className="mb-3">
-                                <label for="update-email" className="form-label">Email address:</label>
-                                <input type="email" className="form-control" id="update-email" value={Session.get("email")}></input>
+                                <label htmlFor="email" className="form-label">Email address:</label>
+                                <input type="email" className="form-control" id="email" name="email"  defaultValue={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+                                {formik.touched.email && formik.errors.email ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.email}</div>) : null}
                             </div>
                             <div className="mb-3">
                                 <div className="row">
                                     <div className="col">
-                                        <label for="update-email" className="form-label">First Name:</label>
-                                        <input type="text" className="form-control" id="update-firstName" value={Session.get("firstName")}></input> 
+                                        <label htmlFor="firstName" className="form-label">First Name:</label>
+                                        <input type="text" className="form-control" id-="firstName" name="firstName" defaultValue={formik.values.firstName} onChange={formik.handleChange} onBlur={formik.handleBlur}></input> 
+                                        {formik.touched.firstName && formik.errors.firstName ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.firstName}</div>) : null}
                                     </div>
                                     <div className="col">
-                                        <label for="update-lastName" className="form-label">Last Name:</label>
-                                        <input type="text" className="form-control" id="update-lastName" value={Session.get("lastName")}></input> 
+                                        <label htmlFor="lastName" className="form-label">Last Name:</label>
+                                        <input type="text" className="form-control" id="lastName" name="lastName" defaultValue={formik.values.lastName} onChange={formik.handleChange} onBlur={formik.handleBlur}></input> 
+                                        {formik.touched.lastName && formik.errors.lastName ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.lastName}</div>) : null}
                                     </div>
                                 </div>
                             </div>
                             <div className="mb-5">
                                 <div className="row">
                                     <div className="col-8">
-                                    <label for="update-username" className="form-label">Username:</label>
+                                         <label htmlFor="username" className="form-label">Username:</label>
                                         <div className="input-group">
-                                            <span class="input-group-text" id="basic-addon1">@</span>                                        
-                                            <input type="text" className="form-control" id="update-username" value={Session.get("username")}></input> 
+                                            <span className="input-group-text" id="basic-addon1">@</span>                                        
+                                            <input type="text" className="form-control" id="username" name="username" defaultValue={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur}></input> 
                                         </div>
+                                        {formik.touched.username && formik.errors.username ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.username}</div>) : null}
+
                                     </div>
                                     <div className="col">
-                                        <label for="update-birthday" className="form-label">Birthday:</label>
-                                        <input type="date" className="form-control" id="update-birthday"></input> 
+                                        <label htmlFor="birthday" className="form-label">Birthday:</label>
+                                        <input type="date" className="form-control" id="birthday" name="birthday" value={moment(formik.values.birthday).format("YYYY-MM-DD")} onChange={formik.handleChange} onBlur={formik.handleBlur}></input> 
+                                        {formik.touched.birthday && formik.errors.birthday ? (<div className="alert alert-danger d-flex align-items-center">{formik.errors.birthday}</div>) : null}
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-5 form-floating">
-                                <textarea className="form-control" placeholder="About yourself/your profile" id="update-about" style={{height: "100px"}}></textarea>
-                                <label for="update-about">About yourself/your profile</label>
+                            <div className="mb-5 form-floating">
+                                <textarea className="form-control" placeholder="About yourself/your profile" id="about" name="about" style={{height: "250px"}} defaultValue={formik.values.about} onChange={formik.handleChange} onBlur={formik.handleBlur}></textarea>
+                                <label htmlFor="about">About yourself/your profile</label>
                             </div>
-                            <div class="mb-3">
-                            <div class="input-group mb-3">
-                                <label class="input-group-text" for="inputGroupFile02">Update Profile Photo:</label>
-                                <input type="file" class="form-control" id="update-profilePhoto"></input>
+                            <div className="mb-3">
+                            <div className="input-group mb-3">
+                                <label className="input-group-text" htmlFor="profilePhoto">Update Profile Photo:</label>
+                                <input type="file" className="form-control" id="profilePhoto" name="profilePhoto" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
                             </div>                            
-                            <div class="input-group mb-3">
-                                <label class="input-group-text" for="update-profileCover">Update Cover Photo:</label>
-                                <input type="file" class="form-control" id="update-profileCover"></input>
+                            <div className="input-group mb-3">
+                                <label className="input-group-text" htmlFor="profileCover">Update Cover Photo:</label>
+                                <input type="file" className="form-control" id="profileCover" name="profileCover" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
                             </div>
                             </div>
                             <br></br>
-                            <button type="submit" className="btn btn-primary btn-lg btn-block">Submit</button>
+                            <button type="submit" className="btn btn-primary btn-lg btn-block"  onClick={formik.handleSubmit}>Submit</button>
                         </form>
                     </div>
                 </div>
@@ -72,4 +135,4 @@ export default class Profile extends React.Component {
       </div>
     );
   }
-}
+export default UpdateProfile;

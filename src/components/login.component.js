@@ -43,6 +43,8 @@ export default class Login extends React.Component {
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
                 Session.set("email", resp.data.email);
+                Session.set("about", resp.data.about);
+                Session.set("birthday", resp.data.birthday);
                 this.setState({ isSignedUp: true });
             } catch (error) {
                 if(error.response.status === 401){

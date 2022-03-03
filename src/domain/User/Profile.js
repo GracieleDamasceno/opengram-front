@@ -40,13 +40,8 @@ export default class Profile extends React.Component {
                       <div className="row">
                         <div className="col-1"></div>
                           <div className="col-10 p-4 shadow-lg bg-body rounded">
-                            <p>
-                              This is a text about me. I am very cool and friendly!
-                              <br></br>👩🏽‍💻 Software Developer
-                              📚 Book worm 
-                              🎬 Movie enthusiast 
-                              🎧 Music lover 
-                              🥔 Couch potato 
+                            <p style={{ whiteSpace: 'pre-wrap' }} >
+                              {Session.get("about")}
                             </p>
                           </div>
                           <div className="col-1"></div>

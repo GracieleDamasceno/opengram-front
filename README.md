@@ -77,3 +77,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## `npm install react-session-api --save`
 ## `npm install js-cookie --save`
 ## `npm install react-error-boundary --save`
+## `npm install formik --save`
+## `npm install yup --save`
+## `npm install moment --save`
