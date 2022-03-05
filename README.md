@@ -80,3 +80,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## `npm install formik --save`
 ## `npm install yup --save`
 ## `npm install moment --save`
+## `npm install jquery --save`

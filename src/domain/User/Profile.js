@@ -36,21 +36,9 @@ export default class Profile extends React.Component {
                           </ul>
                       </div>
                     </div>
-                    <div className="px-4 mb-4 py-3 pb-4 mt-5">
-                      <div className="row">
-                        <div className="col-1"></div>
-                          <div className="col-10 p-4 shadow-lg bg-body rounded">
-                            <p style={{ whiteSpace: 'pre-wrap' }} >
-                              {Session.get("about")}
-                            </p>
-                          </div>
-                          <div className="col-1"></div>
-                        </div>
-                    </div>
-                    <hr></hr>
-                    <div className="py-4 px-4">
+                    <div className="py-4 px-4 mt-3">
                         <div className="d-flex align-items-center justify-content-between mb-3">
-                            <h5 className="mb-0">Latest photos</h5><a href="#" className="btn btn-link text-muted">Show all</a>
+                            <h5 className="mb-0">Latest Albums</h5><a href="/albums" className="btn btn-link text-muted">Show all</a>
                         </div>
                         <div className="row">
                             <div className="col-lg-6 mb-2 pr-lg-1"><img src="https://images.unsplash.com/photo-1469594292607-7bd90f8d3ba4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" alt="" className="img-fluid rounded shadow-sm"></img></div>

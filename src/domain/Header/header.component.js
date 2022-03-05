@@ -26,7 +26,7 @@ export default function HeaderLogin() {
                                 <Link className="nav-link" to={"/profile"}>Profile</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to={"/"}>Discover</Link>
+                                <Link className="nav-link" to={"/albums"}>Albums</Link>
                             </li>  
                         </ul>
                         <ul className="navbar-nav ms-auto">

@@ -6,6 +6,7 @@ import api from '../../services/Api';
 import { useFormik} from 'formik';
 import * as Yup from 'yup';
 import * as moment from 'moment';
+import $ from 'jquery';
 
 const UpdateProfile = () => {
     const formik = useFormik({
@@ -16,7 +17,6 @@ const UpdateProfile = () => {
             lastName: Session.get("lastName"), 
             username: Session.get("username"), 
             birthday: Session.get("birthday"),
-            about: Session.get("about"), 
             profilePhoto: "", 
             coverPhoto: "",
             wasUpdated: false,
@@ -36,8 +36,6 @@ const UpdateProfile = () => {
                 .required('Required'),
             birthday: Yup.date()
                 .min(new Date(1900, 0, 1)),
-            about: Yup.string()
-                .max(250, 'Must be 250 characters or less'),
         }),
         onSubmit: async (values) => {
             try{
@@ -46,7 +44,6 @@ const UpdateProfile = () => {
                 Session.set("lastName", update.data.lastName);
                 Session.set("username", update.data.username);
                 Session.set("email", update.data.email);
-                Session.set("about", update.data.about);
                 Session.set("birthday", update.data.birthday);
                 alert("Profile successfully updated!");
                 formik.values.wasUpdated = true;
@@ -110,18 +107,14 @@ const UpdateProfile = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="mb-5 form-floating">
-                                <textarea className="form-control" placeholder="About yourself/your profile" id="about" name="about" style={{height: "250px"}} defaultValue={formik.values.about} onChange={formik.handleChange} onBlur={formik.handleBlur}></textarea>
-                                <label htmlFor="about">About yourself/your profile</label>
-                            </div>
                             <div className="mb-3">
-                            <div className="input-group mb-3">
+                            <div className="input-group mb-4">
                                 <label className="input-group-text" htmlFor="profilePhoto">Update Profile Photo:</label>
-                                <input type="file" className="form-control" id="profilePhoto" name="profilePhoto" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
-                            </div>                            
+                                <input type="file" className="form-control" id="profilePhoto" accept="image/*" name="profilePhoto" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+                            </div>
                             <div className="input-group mb-3">
                                 <label className="input-group-text" htmlFor="profileCover">Update Cover Photo:</label>
-                                <input type="file" className="form-control" id="profileCover" name="profileCover" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+                                <input type="file" className="form-control" id="profileCover" accept="image/*" name="profileCover" onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
                             </div>
                             </div>
                             <br></br>
@@ -129,8 +122,10 @@ const UpdateProfile = () => {
                         </form>
                     </div>
                 </div>
+                
             </div>
             <div className="col"></div>
+            
         </div>
       </div>
     );
