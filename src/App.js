@@ -7,6 +7,7 @@ import SignUp from "./components/signup.component";
 import Profile from "./domain/User/Profile.js"
 import UpdateProfile from "./domain/User/UpdateProfile.js"
 import Albums from "./domain/Photos/Albums.js"
+import CreateAlbum from "./domain/Photos/CreateAlbum.js"
 
 function App() {  
   return (<Router>
@@ -18,6 +19,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/albums" element={<Albums />} />
+            <Route path="/create-album" element={<CreateAlbum />} />
           </Routes>
     </div></Router>
   );
