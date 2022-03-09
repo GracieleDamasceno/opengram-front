@@ -2,8 +2,8 @@ import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Login from "./components/login.component";
-import SignUp from "./components/signup.component";
+import Login from "./domain/Registration/Login.js";
+import SignUp from "./domain/Registration/SignUp";
 import Profile from "./domain/User/Profile.js"
 import UpdateProfile from "./domain/User/UpdateProfile.js"
 import Albums from "./domain/Photos/Albums.js"

@@ -1,7 +1,7 @@
 import React from 'react';
-import api from '../services/Api';
+import api from '../../services/Api.js'
 import { Navigate } from "react-router-dom";
-import Header from "../domain/Header/header-no-login.component.js"
+import Header from "../Header/header-no-login.component.js"
 
 export default class SignUp extends React.Component {
     constructor(props) {

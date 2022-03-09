@@ -1,8 +1,8 @@
 import React from 'react';
-import api from '../services/Api';
+import api from '../../services/Api';
 import { Navigate } from "react-router-dom";
 import Session from 'react-session-api';
-import Header from "../domain/Header/header-no-login.component.js"
+import Header from "../Header/header-no-login.component.js"
 
 Session.config({ browserStorage: true, timeout: 1440 });
 
@@ -43,7 +43,7 @@ export default class Login extends React.Component {
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
                 Session.set("email", resp.data.email);
-                Session.set("birthday", resp.data.birthday);
+                Session.set("albumNumber", resp.data.albumNumber);
                 this.setState({ isSignedUp: true });
             } catch (error) {
                 if(error.response.status === 401){

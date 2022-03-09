@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Header/header.component';
 import api from '../../services/Api';
 import { Navigate } from "react-router-dom";
+import Session from 'react-session-api'
 
 export default class CreateAlbum extends React.Component {
     constructor(props) {
@@ -11,6 +12,8 @@ export default class CreateAlbum extends React.Component {
         this.onAlbumDescriptionChange = this.onAlbumDescriptionChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
+            userId: Session.get("id"),
+            albumNumber: Session.get("albumNumber"),
             albumName: "",
             albumDescription: "",
             photos: "",
@@ -33,29 +36,29 @@ export default class CreateAlbum extends React.Component {
     onSubmit(e) {
         try {
             e.preventDefault()
-            // Uploading photos
-
             const photosUpload = async () => {
                 try {
+                    console.log( Session.get("albumNumber"))
                     var formData = new FormData();
                     let albumInfo = {
+                        userId: this.state.userId,
                         albumName: this.state.albumName,
                         albumDescription: this.state.albumDescription,
-                        photos: [],
+                        albumNumber: this.state.albumNumber
                     }
 
-                    formData.append("albumInfo",  JSON.stringify(albumInfo));
+                    formData.append("albumInfo", JSON.stringify(albumInfo));
                     for (const key of Object.keys(this.state.photos)) {
                         formData.append("photos", this.state.photos[key])
                     }
 
-                    console.log("sending...")
-                    await api({
-                        method: "post",
-                        url: "/album/upload/photos",
-                        data: formData,
-                        headers: { "Content-Type": "multipart/form-data" },
-                    });
+                    const resp = await api({ method: "post", url: "/album/create/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
+                    console.log(resp);
+                    console.log( resp.data.albumNumber);
+                    Session.set("albumNumber", resp.data.albumNumber);
+
+                    alert("Album successfully created!");
+                    this.state.wasCreated = true;
                 } catch (error) {
                     alert("Something went wrong on our side. Please, try again later.");
                     console.log(JSON.stringify(error))
@@ -63,8 +66,7 @@ export default class CreateAlbum extends React.Component {
             };
 
             photosUpload();
-            //alert("Album successfully created!");
-            //this.state.wasCreated = true;
+
         } catch (error) {
             console.error(error)
             if (error.response.status === 500) {

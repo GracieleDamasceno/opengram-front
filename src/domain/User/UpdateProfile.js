@@ -15,7 +15,6 @@ const UpdateProfile = () => {
             firstName: Session.get("firstName"),
             lastName: Session.get("lastName"),
             username: Session.get("username"),
-            birthday: Session.get("birthday"),
             profilePhoto: "",
             coverPhoto: "",
             wasUpdated: false,
@@ -32,9 +31,7 @@ const UpdateProfile = () => {
                 .required('Required'),
             username: Yup.string()
                 .max(30, 'Username must be 30 characters or less')
-                .required('Required'),
-            birthday: Yup.date()
-                .min(new Date(1900, 0, 1)),
+                .required('Required')
         }),
         onSubmit: async (values) => {
             try {
@@ -43,7 +40,6 @@ const UpdateProfile = () => {
                 Session.set("lastName", update.data.lastName);
                 Session.set("username", update.data.username);
                 Session.set("email", update.data.email);
-                Session.set("birthday", update.data.birthday);
                 alert("Profile successfully updated!");
                 formik.values.wasUpdated = true;
             } catch (error) {
@@ -89,21 +85,13 @@ const UpdateProfile = () => {
                                     </div>
                                 </div>
                                 <div className="mb-5">
-                                    <div className="row">
-                                        <div className="col-8">
+                                        <div className="col">
                                             <label htmlFor="username" className="form-label">Username:</label>
                                             <div className="input-group">
                                                 <span className="input-group-text" id="basic-addon1">@</span>
                                                 <input type="text" className="form-control" id="username" name="username" defaultValue={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
                                             </div>
                                             {formik.touched.username && formik.errors.username ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.username}</div>) : null}
-
-                                        </div>
-                                        <div className="col">
-                                            <label htmlFor="birthday" className="form-label">Birthday:</label>
-                                            <input type="date" className="form-control" id="birthday" name="birthday" value={moment(formik.values.birthday).format("YYYY-MM-DD")} onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
-                                            {formik.touched.birthday && formik.errors.birthday ? (<div className="alert alert-danger d-flex align-items-center">{formik.errors.birthday}</div>) : null}
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="mb-3">
