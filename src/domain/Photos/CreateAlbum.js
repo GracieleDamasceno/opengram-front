@@ -55,7 +55,7 @@ export default class CreateAlbum extends React.Component {
                     Session.set("albumNumber", resp.data.albumNumber);
 
                     alert("Album successfully created!");
-                    this.state.wasCreated = true;
+                    this.setState({ wasCreated: true });
                 } catch (error) {
                     alert("Something went wrong on our side. Please, try again later.");
                     console.log(JSON.stringify(error))
