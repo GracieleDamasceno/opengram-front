@@ -38,7 +38,6 @@ export default class CreateAlbum extends React.Component {
             e.preventDefault()
             const photosUpload = async () => {
                 try {
-                    console.log( Session.get("albumNumber"))
                     var formData = new FormData();
                     let albumInfo = {
                         userId: this.state.userId,
@@ -53,8 +52,6 @@ export default class CreateAlbum extends React.Component {
                     }
 
                     const resp = await api({ method: "post", url: "/album/create/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
-                    console.log(resp);
-                    console.log( resp.data.albumNumber);
                     Session.set("albumNumber", resp.data.albumNumber);
 
                     alert("Album successfully created!");

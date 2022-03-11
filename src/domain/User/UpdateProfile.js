@@ -85,13 +85,13 @@ const UpdateProfile = () => {
                                     </div>
                                 </div>
                                 <div className="mb-5">
-                                        <div className="col">
-                                            <label htmlFor="username" className="form-label">Username:</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text" id="basic-addon1">@</span>
-                                                <input type="text" className="form-control" id="username" name="username" defaultValue={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
-                                            </div>
-                                            {formik.touched.username && formik.errors.username ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.username}</div>) : null}
+                                    <div className="col">
+                                        <label htmlFor="username" className="form-label">Username:</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text" id="basic-addon1">@</span>
+                                            <input type="text" className="form-control" id="username" name="username" defaultValue={formik.values.username} onChange={formik.handleChange} onBlur={formik.handleBlur}></input>
+                                        </div>
+                                        {formik.touched.username && formik.errors.username ? (<div className="alert alert-danger d-flex align-items-center" role="alert">{formik.errors.username}</div>) : null}
                                     </div>
                                 </div>
                                 <div className="mb-3">
