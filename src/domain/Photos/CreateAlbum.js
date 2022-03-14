@@ -90,18 +90,21 @@ export default class CreateAlbum extends React.Component {
                                     <div className="mb-5">
                                         <div className="col">
                                             <label htmlFor="albumName" className="form-label">Album Name:</label>
-                                            <input type="text" className="form-control" id="albumName" name="albumName" onChange={this.onAlbumNameChange} />
+                                            <input type="text" className="form-control" id="albumName" name="albumName" onChange={this.onAlbumNameChange} required/>
                                         </div>
                                     </div>
                                     <div className="mb-5 form-floating">
-                                        <textarea className="form-control" placeholder="Album Description" id="albumDescription" name="albumDescription" style={{ height: "150px" }} onChange={this.onAlbumDescriptionChange} />
+                                        <textarea className="form-control" placeholder="Album Description" id="albumDescription" name="albumDescription" style={{ height: "150px" }} onChange={this.onAlbumDescriptionChange} required/>
                                         <label htmlFor="albumDescription">Album Description</label>
                                     </div>
                                     <div className="input-group mb-3">
                                         <label className="input-group-text" htmlFor="photos">Add Photos:</label>
-                                        <input type="file" className="form-control" id="photos" multiple="multiple" accept="image/*" name="photos" onChange={this.onFileChange} />
+                                        <input type="file" className="form-control" id="photos" multiple="multiple" accept="image/*" name="photos" onChange={this.onFileChange} required/>
                                     </div>
-                                    <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                                    <div className="row mt-5">
+                                        <div className="col-10"></div>
+                                        <button type="submit" className="btn btn-primary btn-block col">Submit</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
