@@ -1,6 +1,7 @@
 import Session from 'react-session-api'
 import React from 'react';
 import api from '../services/Api.js';
+var basePath = require('../services/Api.js').baseURLHost;
 
 export default class AlbumsComponent extends React.Component {
     state = {
@@ -8,22 +9,12 @@ export default class AlbumsComponent extends React.Component {
         thumbnail: ""
     }
     async componentDidMount() {
-        const param = new URLSearchParams({ id: Session.get("id")});
-        const resp = await api.get("/album", param.get("id"));
+        const resp = await api.get("/album", { params: { id: Session.get("id") }});
         const data = resp.data;
         var fullAlbums = []
         for (var element of data) {
-            const image = await api.post("/album/thumbnail", { albumFolder: element.albumFolder }, { responseType: 'arraybuffer' })
-                .then(resp => {
-                    try {
-                        return ('data:image/jpeg;base64,' + btoa(
-                            new Uint8Array(resp.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-                        ));
-                    } catch (err) {
-                        console.log(err)
-                    }
-                });
-            element.thumbnail = image;
+            let url = basePath+"/album/thumbnail/?albumFolder="+element.albumFolder;
+            element.thumbnail = url;
             fullAlbums.push(element);
         }
         this.setState({ albums: resp.data });
@@ -34,7 +25,7 @@ export default class AlbumsComponent extends React.Component {
                 {this.state.albums.map((album, index) =>(
                 <div className="col mb-4" key={index}>
                     <div className="card">
-                        <img src={album.thumbnail} className="card-img-top" alt="..." width="750"/>
+                        <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750"/>
                         <div className="card-body">
                             <h5 className="card-title">{album.albumName}</h5>
                             <p className="card-text">{album.albumDescription}</p>
