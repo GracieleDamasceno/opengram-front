@@ -22,7 +22,7 @@ export default class Albums extends React.Component {
                                                 <a href="/create-album" className="btn btn-primary">Create new photo album</a>
                                             </div>
                                         </div>
-                                        <AlbumsComponent />
+                                        <AlbumsComponent albumsSize={"9"}/>
                                     </div>
                                 </div>
                             </div>
