@@ -19,7 +19,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/update-profile" element={<UpdateProfile />} />
             <Route path="/albums" element={<Albums />} />
-            <Route path="/album-details" element={<AlbumDetails />} />
+            <Route path="/album/:id" element={<AlbumDetails />} />
             <Route path="/create-album" element={<CreateAlbum />} />
           </Routes>
     </div></Router>

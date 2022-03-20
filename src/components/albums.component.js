@@ -11,7 +11,6 @@ export default class AlbumsComponent extends React.Component {
     }
     async componentDidMount() {
         var resp;
-        console.log(this.props.albumsSize)
         if (this.props.albumsSize === "4") {
             resp = await api.get("/album", { params: { id: Session.get("id"), pagination: this.props.albumsSize, page: 1 } });
         } else {
@@ -38,26 +37,11 @@ export default class AlbumsComponent extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
                                         <p className="card-text overflow-hidden">{album.albumDescription}</p>
-                                        <a href="#" className="stretched-link"></a>
+                                        <a href={'/album/' + album._id} className="stretched-link"></a>
                                     </div>
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <div className="col mb-5">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             )
@@ -72,26 +56,11 @@ export default class AlbumsComponent extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
                                         <p className="card-text overflow-hidden">{album.albumDescription}</p>
-                                        <a href="#" className="stretched-link"></a>
+                                        <a href={'/album/' + album._id} className="stretched-link"></a>
                                     </div>
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <div className="col mb-5">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-end">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
                     </div>
                 </div>
             )

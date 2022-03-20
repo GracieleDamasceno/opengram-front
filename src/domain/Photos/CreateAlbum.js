@@ -98,8 +98,8 @@ export default class CreateAlbum extends React.Component {
                                         <label htmlFor="albumDescription">Album Description</label>
                                     </div>
                                     <div className="input-group mb-3">
-                                        <label className="input-group-text" htmlFor="photos">Add Photos:</label>
-                                        <input type="file" className="form-control" id="photos" multiple="multiple" accept="image/*" name="photos" onChange={this.onFileChange} required/>
+                                        <label className="input-group-text" htmlFor="photos">Add Album Cover:</label>
+                                        <input type="file" className="form-control" id="photos" accept="image/*" name="photos" onChange={this.onFileChange} required/>
                                     </div>
                                     <div className="row mt-5">
                                         <div className="col-10"></div>
