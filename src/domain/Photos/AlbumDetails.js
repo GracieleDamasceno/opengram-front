@@ -2,6 +2,7 @@ import api from '../../services/Api.js';
 import React from 'react';
 import Header from '../Header/header.component';
 import { useParams } from 'react-router-dom';
+import Modal from '../../components/photo-upload.component.js';
 
 
 export function withRouter(AlbumDetails) {
@@ -16,8 +17,17 @@ class AlbumDetails extends React.Component {
     state = {
         albumTitle: "",
         albumDescription: "",
-        albumCreation: ""
+        albumCreation: "",
+        showModal: false
     }
+
+    showModal = e => {
+        this.setState({
+            showModal: !this.state.showModal
+        });
+        console.log(this.state.showModal)
+    };
+
     async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
         this.setState({ albumTitle: resp.data.albumName });
@@ -37,9 +47,14 @@ class AlbumDetails extends React.Component {
                                 <div className="col-10 mt-5 mb-5">
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
+                                    <div className="d-flex flex-row-reverse mb-5">
+                                        <button onClick={e => { this.showModal(e); }}>Add Photos</button>
+                                    </div>
+                                    <Modal onClose={this.showModal} showModal={this.state.showModal} />
                                     <br></br>
                                     <div className="container">
                                         <div className="row">
+
                                             {this.state.albumDescription}
                                         </div>
                                         <div className="row">

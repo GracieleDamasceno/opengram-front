@@ -37,7 +37,7 @@ export default class AlbumsComponent extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
                                         <p className="card-text overflow-hidden">{album.albumDescription}</p>
-                                        <a href={'/album/' + album._id} className="stretched-link"></a>
+                                        <a href={'/album/' + album._id} className="stretched-link"/>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@ export default class AlbumsComponent extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
                                         <p className="card-text overflow-hidden">{album.albumDescription}</p>
-                                        <a href={'/album/' + album._id} className="stretched-link"></a>
+                                        <a href={'/album/' + album._id} className="stretched-link"/>
                                     </div>
                                 </div>
                             </div>
