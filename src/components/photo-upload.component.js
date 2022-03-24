@@ -1,49 +1,25 @@
-import React from 'react';
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { Modal, Button } from 'react-bootstrap';
 
-
-export default class PhotoUpload extends React.Component {
-    onClose = e => {
-        console.log(this.props.onClose)
-        this.props.onClose && this.props.onClose(e);
-    };
-
-    render() {
-        if (!this.props.showModal) {
-            return null;
-        }
-        return (
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">New message</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="mb-3">
-                                    <label htmlFor="recipient-name" className="col-form-label">Recipient:</label>
-                                    <input type="text" className="form-control" id="recipient-name" />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="message-text" className="col-form-label">Message:</label>
-                                    <textarea className="form-control" id="message-text"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={this.onClose}>Close</button>
-                            <button type="button" className="btn btn-primary">Send message</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+export default function PhotoUpload() {
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    return (
+        <>
+            <Button variant="primary" onClick={handleShow}>Add Photos</Button>
+            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Add Media</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <input type="file" className="form-control" id="photos" multiple accept="image/*" name="photos" required />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                    <Button variant="primary" onClick={handleClose}>Upload Photos</Button>
+                </Modal.Footer>
+            </Modal>
+        </>
+    );
 }
-
-PhotoUpload.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    showModal: PropTypes.bool.isRequired
-};

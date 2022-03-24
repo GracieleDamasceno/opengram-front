@@ -47,19 +47,19 @@ class AlbumDetails extends React.Component {
                                 <div className="col-10 mt-5 mb-5">
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
-                                    <div className="d-flex flex-row-reverse mb-5">
-                                        <button onClick={e => { this.showModal(e); }}>Add Photos</button>
-                                    </div>
-                                    <Modal onClose={this.showModal} showModal={this.state.showModal} />
                                     <br></br>
-                                    <div className="container">
-                                        <div className="row">
-
+                                    <div className="row">
+                                        <div className='col-2'></div>
+                                        <div className='col-8 text-center text-break'>
                                             {this.state.albumDescription}
                                         </div>
-                                        <div className="row">
-                                            {this.state.albumCreation}
+                                        <div className="col-2">
+                                            <Modal />
                                         </div>
+                                    </div>
+                                    <br></br>
+                                    <div className="row">
+                                        Created at: {this.state.albumCreation}
                                     </div>
                                 </div>
                             </div>
