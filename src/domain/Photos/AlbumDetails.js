@@ -19,7 +19,8 @@ class AlbumDetails extends React.Component {
         albumDescription: "",
         albumCreation: "",
         albumFolder: "",
-        showModal: false
+        showModal: false,
+        photos: [],
     }
 
     showModal = e => {
@@ -35,6 +36,8 @@ class AlbumDetails extends React.Component {
         this.setState({ albumDescription: resp.data.albumDescription });
         this.setState({ albumCreation: resp.data.albumCreation });
         this.setState({ albumFolder: resp.data.albumFolder });
+
+        const photosResp = await api.get("/photos/" + { params: { albumFolder: this.state.albumFolder } });
     }
 
     render() {
@@ -56,12 +59,27 @@ class AlbumDetails extends React.Component {
                                             {this.state.albumDescription}
                                         </div>
                                         <div className="col-2">
-                                            <Modal albumLocation = {this.state.albumFolder}/>
+                                            <Modal albumLocation={this.state.albumFolder} />
                                         </div>
                                     </div>
                                     <br></br>
                                     <div className="row">
                                         Created at: {this.state.albumCreation}
+                                    </div>
+                                    <div>
+                                        <div className="row row-cols-1 row-cols-md-3">
+                                            {this.state.photos.map((photo, index) => (
+                                                <div className="col mb-4" key={index}>
+                                                    <div className="card shadow p-3 mb-5 bg-white rounded">
+                                                        <img src={photo.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">{photo.albumName}</h5>
+                                                            <p className="card-text overflow-hidden">{photo.albumDescription}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
