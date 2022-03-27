@@ -18,6 +18,7 @@ class AlbumDetails extends React.Component {
         albumTitle: "",
         albumDescription: "",
         albumCreation: "",
+        albumFolder: "",
         showModal: false
     }
 
@@ -33,6 +34,7 @@ class AlbumDetails extends React.Component {
         this.setState({ albumTitle: resp.data.albumName });
         this.setState({ albumDescription: resp.data.albumDescription });
         this.setState({ albumCreation: resp.data.albumCreation });
+        this.setState({ albumFolder: resp.data.albumFolder });
     }
 
     render() {
@@ -54,7 +56,7 @@ class AlbumDetails extends React.Component {
                                             {this.state.albumDescription}
                                         </div>
                                         <div className="col-2">
-                                            <Modal />
+                                            <Modal albumLocation = {this.state.albumFolder}/>
                                         </div>
                                     </div>
                                     <br></br>

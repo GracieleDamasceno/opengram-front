@@ -3,10 +3,15 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import api from '../services/Api.js';
 
 
-export default function PhotoUpload() {
+export default function PhotoUpload(props) {
     const [show, setShow] = useState(false);
+    const [ files, setFiles] = useState();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    function handleChange(event) {
+        setFiles(event.target.files)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -15,18 +20,17 @@ export default function PhotoUpload() {
                 try {
                     var formData = new FormData();
                     let albumInfo = {
-                        userId: this.state.userId,
-                        albumFolder: this.state.albumFolder
+                        albumLocation: props.albumLocation
                     }
 
                     formData.append("albumInfo", JSON.stringify(albumInfo));
-                    for (const key of Object.keys(this.state.photos)) {
-                        formData.append("photos", this.state.photos[key])
+                    for(var i = 0; i < files.length; i++) {
+                        formData.append("photos", files[i]);
                     }
 
-                    await api({ method: "post", url: "/album/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
-
+                    const resp = await api({ method: "post", url: "/album/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
                     alert("Photos uploaded successfully!");
+                    window.location.reload();
                 } catch (error) {
                     alert("Something went wrong on our side. Please, try again later.");
                     console.log(JSON.stringify(error))
@@ -53,7 +57,7 @@ export default function PhotoUpload() {
                 </Modal.Header>
                 <Form onSubmit={handleSubmit} id="uploadForm">
                 <Modal.Body>
-                    <input type="file" className="form-control" id="photos" multiple accept="image/*" name="photos" required />
+                    <input type="file" className="form-control" multiple accept="image/*" required onChange={handleChange}/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
