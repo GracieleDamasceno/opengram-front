@@ -5,7 +5,7 @@ import api from '../services/Api.js';
 
 export default function PhotoUpload(props) {
     const [show, setShow] = useState(false);
-    const [ files, setFiles] = useState();
+    const [files, setFiles] = useState();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -20,15 +20,17 @@ export default function PhotoUpload(props) {
                 try {
                     var formData = new FormData();
                     let albumInfo = {
-                        albumLocation: props.albumLocation
+                        albumLocation: props.albumLocation,
+                        id: props.albumId
                     }
 
                     formData.append("albumInfo", JSON.stringify(albumInfo));
-                    for(var i = 0; i < files.length; i++) {
+                    for (var i = 0; i < files.length; i++) {
                         formData.append("photos", files[i]);
                     }
 
-                    const resp = await api({ method: "post", url: "/album/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
+                    await api({ method: "post", url: "/photos/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
+                    
                     alert("Photos uploaded successfully!");
                     window.location.reload();
                 } catch (error) {
@@ -47,7 +49,7 @@ export default function PhotoUpload(props) {
         }
         console.log("Form was submitted, now the modal can be closed");
         handleClose();
-      };
+    };
     return (
         <>
             <Button variant="primary" onClick={handleShow}>Add Photos</Button>
@@ -56,13 +58,13 @@ export default function PhotoUpload(props) {
                     <Modal.Title>Upload Media</Modal.Title>
                 </Modal.Header>
                 <Form onSubmit={handleSubmit} id="uploadForm">
-                <Modal.Body>
-                    <input type="file" className="form-control" multiple accept="image/*" required onChange={handleChange}/>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button variant="primary" onClick={handleClose} type="submit" form="uploadForm">Upload Photos</Button>
-                </Modal.Footer>
+                    <Modal.Body>
+                        <input type="file" className="form-control" multiple accept="image/*" required onChange={handleChange} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                        <Button variant="primary" onClick={handleClose} type="submit" form="uploadForm">Upload Photos</Button>
+                    </Modal.Footer>
                 </Form>
             </Modal>
         </>
