@@ -3,13 +3,11 @@ import api from '../../services/Api.js';
 import Header from '../Header/header.component';
 import Modal from '../../components/photos-upload.component.js';
 import { useParams } from 'react-router-dom';
+import dateFormat from "dateformat";
 
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-video.css';
-import lgVideo from 'lightgallery/plugins/video';
-import lgZoom from 'lightgallery/plugins/zoom';
+import "lightgallery.js/dist/css/lightgallery.css";
+import { LightgalleryProvider } from "react-lightgallery";
+import { LightgalleryItem } from "react-lightgallery";
 
 export function withRouter(AlbumDetails) {
     return (props) => {
@@ -36,11 +34,11 @@ class AlbumDetails extends React.Component {
         console.log(this.state.showModal)
     };
 
-    async componentDidMount() {
+    async componentDidMount() {       
         const resp = await api.get("/album/" + this.props.match.params.id);
         this.setState({ albumTitle: resp.data.albumName });
         this.setState({ albumDescription: resp.data.albumDescription });
-        this.setState({ albumCreation: resp.data.albumCreation });
+        this.setState({ albumCreation: dateFormat(resp.data.albumCreation, "mmmm dS yyyy, h:MM:ss TT") });
         this.setState({ albumFolder: resp.data.albumFolder });
         this.setState({ albumId: resp.data._id });
 
@@ -67,6 +65,9 @@ class AlbumDetails extends React.Component {
                                 <div className="col-10 mt-5 mb-5">
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
+                                    <div className="row">
+                                    <p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p>
+                                    </div>
                                     <br></br>
                                     <div className="row">
                                         <div className='col-2'></div>
@@ -78,17 +79,17 @@ class AlbumDetails extends React.Component {
                                         </div>
                                     </div>
                                     <br></br>
-                                    <div className="row">
-                                        Created at: {this.state.albumCreation}
+                                    <div className="row row-cols-1 row-cols-md-2 mt-5">
+                                        <LightgalleryProvider>
+                                            {this.state.photos.map((photo, index) => (
+                                                <div style={{ maxWidth: "50%", width: "50%", padding: "5px" }}>
+                                                    <LightgalleryItem group="any" src={photo} >
+                                                        <img src={photo} alt="thumbnail" style={{ width: "100%" }} />
+                                                    </LightgalleryItem>
+                                                </div>
+                                            ))}
+                                        </LightgalleryProvider>
                                     </div>
-                                    <br></br>
-                                    <LightGallery plugins={[lgZoom, lgVideo]} mode="lg-fade">
-                                        {this.state.photos.map((photo, index) => (
-                                            <a href={photo} className="gallery-item">
-                                                <img alt="img1" src={photo} className="img-responsive" width="450"/>
-                                            </a>
-                                        ))}
-                                    </LightGallery>
                                     {/* <div className="mt-5">
                                         <div className="row row-cols-1 row-cols-md-2">
                                             {this.state.photos.map((photo, index) => (
@@ -106,7 +107,7 @@ class AlbumDetails extends React.Component {
                     </div>
                     <div className="col"></div>
                 </div>
-            </div>
+            </div >
         );
     }
 }
