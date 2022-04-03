@@ -1,9 +1,15 @@
-import api from '../../services/Api.js';
 import React from 'react';
+import api from '../../services/Api.js';
 import Header from '../Header/header.component';
+import Modal from '../../components/photos-upload.component.js';
 import { useParams } from 'react-router-dom';
-import Modal from '../../components/photo-upload.component.js';
 
+import LightGallery from 'lightgallery/react';
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-video.css';
+import lgVideo from 'lightgallery/plugins/video';
+import lgZoom from 'lightgallery/plugins/zoom';
 
 export function withRouter(AlbumDetails) {
     return (props) => {
@@ -39,13 +45,14 @@ class AlbumDetails extends React.Component {
         this.setState({ albumId: resp.data._id });
 
         const photos = await api.get("/photos/?albumFolder=" + this.state.albumFolder + "&id=" + this.state.albumId);
-        
+
         var photosLoaded = [];
 
         photos.data.map(async (element) => {
             photosLoaded.push("/photos/file/?path=" + element.photoPath);
         })
         this.setState({ photos: photosLoaded });
+        console.log(this.state.photos)
     }
 
     render() {
@@ -74,7 +81,15 @@ class AlbumDetails extends React.Component {
                                     <div className="row">
                                         Created at: {this.state.albumCreation}
                                     </div>
-                                    <div className="mt-5">
+                                    <br></br>
+                                    <LightGallery plugins={[lgZoom, lgVideo]} mode="lg-fade">
+                                        {this.state.photos.map((photo, index) => (
+                                            <a href={photo} className="gallery-item">
+                                                <img alt="img1" src={photo} className="img-responsive" width="450"/>
+                                            </a>
+                                        ))}
+                                    </LightGallery>
+                                    {/* <div className="mt-5">
                                         <div className="row row-cols-1 row-cols-md-2">
                                             {this.state.photos.map((photo, index) => (
                                                 <div className="col mb-4" key={index}>
@@ -84,7 +99,7 @@ class AlbumDetails extends React.Component {
                                                 </div>
                                             ))}
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
