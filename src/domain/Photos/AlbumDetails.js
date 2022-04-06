@@ -9,6 +9,8 @@ import "lightgallery.js/dist/css/lightgallery.css";
 import { LightgalleryProvider } from "react-lightgallery";
 import { LightgalleryItem } from "react-lightgallery";
 
+var basePath = require('../../services/Api.js').baseURLHost;
+
 export function withRouter(AlbumDetails) {
     return (props) => {
         const match = { params: useParams() };
@@ -24,7 +26,7 @@ class AlbumDetails extends React.Component {
         albumFolder: "",
         albumId: "",
         showModal: false,
-        photos: [],
+        photos: []
     }
 
     showModal = e => {
@@ -34,7 +36,7 @@ class AlbumDetails extends React.Component {
         console.log(this.state.showModal)
     };
 
-    async componentDidMount() {       
+    async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
         this.setState({ albumTitle: resp.data.albumName });
         this.setState({ albumDescription: resp.data.albumDescription });
@@ -42,15 +44,18 @@ class AlbumDetails extends React.Component {
         this.setState({ albumFolder: resp.data.albumFolder });
         this.setState({ albumId: resp.data._id });
 
-        const photos = await api.get("/photos/?albumFolder=" + this.state.albumFolder + "&id=" + this.state.albumId);
+        const photos = await api.get("/photos/?id=" + this.state.albumId);
 
-        var photosLoaded = [];
+        var photosObject = [];
 
         photos.data.map(async (element) => {
-            photosLoaded.push("/photos/file/?path=" + element.photoPath);
+            var photoElement = {};
+            photoElement.photo = "/photos/file/?path=" + element.photoPath;
+            photoElement.thumbnail = basePath + "/album/thumbnail/?photoThumbnail=" + element._id
+            photosObject.push(photoElement);
         })
-        this.setState({ photos: photosLoaded });
-        console.log(this.state.photos)
+        this.setState({ photos: photosObject });
+        console.log(photosObject)
     }
 
     render() {
@@ -66,7 +71,7 @@ class AlbumDetails extends React.Component {
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
                                     <div className="row">
-                                    <p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p>
+                                        <p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p>
                                     </div>
                                     <br></br>
                                     <div className="row">
@@ -74,33 +79,22 @@ class AlbumDetails extends React.Component {
                                         <div className='col-8 text-center text-break'>
                                             {this.state.albumDescription}
                                         </div>
-                                        <div className="col-2">
+                                        <div className="col-2 mt-5">
                                             <Modal albumLocation={this.state.albumFolder} albumId={this.state.albumId} />
                                         </div>
                                     </div>
                                     <br></br>
-                                    <div className="row row-cols-1 row-cols-md-2 mt-5">
+                                    <div className="row row-cols-1 row-cols-md-2 mt-1">
                                         <LightgalleryProvider>
-                                            {this.state.photos.map((photo, index) => (
-                                                <div style={{ maxWidth: "50%", width: "50%", padding: "5px" }}>
-                                                    <LightgalleryItem group="any" src={photo} >
-                                                        <img src={photo} alt="thumbnail" style={{ width: "100%" }} />
+                                            {this.state.photos.map((photoObject, index) => (
+                                                <div style={{ maxWidth: "50%", width: "50%", padding: "5px" }} key={index}>
+                                                    <LightgalleryItem group="any" src={photoObject.photo} >
+                                                        <img src={photoObject.thumbnail} alt="thumbnail" style={{ width: "100%" }} />
                                                     </LightgalleryItem>
                                                 </div>
                                             ))}
                                         </LightgalleryProvider>
                                     </div>
-                                    {/* <div className="mt-5">
-                                        <div className="row row-cols-1 row-cols-md-2">
-                                            {this.state.photos.map((photo, index) => (
-                                                <div className="col mb-4" key={index}>
-                                                    <div className="card shadow p-3 mb-5 bg-white rounded">
-                                                        <img src={photo} className="card-img-top" alt="thumbnail" width="750" />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div> */}
                                 </div>
                             </div>
                         </div>

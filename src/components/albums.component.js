@@ -19,7 +19,7 @@ export default class AlbumsComponent extends React.Component {
         const data = resp.data;
         var fullAlbums = []
         for (var element of data) {
-            let url = basePath + "/album/thumbnail/?albumFolder=" + element.albumFolder;
+            let url = basePath + "/album/thumbnail/?albumThumbnail=" + element._id;
             element.thumbnail = url;
             fullAlbums.push(element);
         }
