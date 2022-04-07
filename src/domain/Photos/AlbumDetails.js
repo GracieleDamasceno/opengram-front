@@ -4,10 +4,7 @@ import Header from '../Header/header.component';
 import Modal from '../../components/photos-upload.component.js';
 import { useParams } from 'react-router-dom';
 import dateFormat from "dateformat";
-
-import "lightgallery.js/dist/css/lightgallery.css";
-import { LightgalleryProvider } from "react-lightgallery";
-import { LightgalleryItem } from "react-lightgallery";
+import Gallery from 'react-grid-gallery';
 
 var basePath = require('../../services/Api.js').baseURLHost;
 
@@ -45,13 +42,16 @@ class AlbumDetails extends React.Component {
         this.setState({ albumId: resp.data._id });
 
         const photos = await api.get("/photos/?id=" + this.state.albumId);
+        console.log(photos)
 
         var photosObject = [];
 
         photos.data.map(async (element) => {
             var photoElement = {};
-            photoElement.photo = "/photos/file/?path=" + element.photoPath;
+            photoElement.src = "/photos/file/?path=" + element.photoPath;
             photoElement.thumbnail = basePath + "/album/thumbnail/?photoThumbnail=" + element._id
+            photoElement.thumbnailWidth = element.photoThumbnailWidth;
+            photoElement.thumbnailHeight = element.photoThumbnailHeight;
             photosObject.push(photoElement);
         })
         this.setState({ photos: photosObject });
@@ -71,30 +71,20 @@ class AlbumDetails extends React.Component {
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
                                     <div className="row">
-                                        <p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p>
+                                        <div className='col-4'><p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p></div>
+                                        <div className='col-6'></div>
+                                        <div className='col-2'><Modal albumLocation={this.state.albumFolder} albumId={this.state.albumId} /></div>
                                     </div>
                                     <br></br>
-                                    <div className="row">
+                                    <div className="row ">
                                         <div className='col-2'></div>
-                                        <div className='col-8 text-center text-break'>
+                                        <div className='col-8 text-center text-break mb-5 mt-5'>
                                             {this.state.albumDescription}
                                         </div>
-                                        <div className="col-2 mt-5">
-                                            <Modal albumLocation={this.state.albumFolder} albumId={this.state.albumId} />
-                                        </div>
+                                        <div className="col-2 mt-5"></div>
                                     </div>
                                     <br></br>
-                                    <div className="row row-cols-1 row-cols-md-2 mt-1">
-                                        <LightgalleryProvider>
-                                            {this.state.photos.map((photoObject, index) => (
-                                                <div style={{ maxWidth: "50%", width: "40%", padding: "5px" }} key={index}>
-                                                    <LightgalleryItem group="any" src={photoObject.photo} >
-                                                        <img src={photoObject.thumbnail} alt="thumbnail" style={{ width: "100%" }} />
-                                                    </LightgalleryItem>
-                                                </div>
-                                            ))}
-                                        </LightgalleryProvider>
-                                    </div>
+                                    <Gallery images={this.state.photos} enableImageSelection={false} backdropClosesModal={true} showLightboxThumbnails={true} lightboxWidth={2048} rowHeight={200}/>
                                 </div>
                             </div>
                         </div>

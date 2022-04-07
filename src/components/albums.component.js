@@ -36,7 +36,7 @@ export default class AlbumsComponent extends React.Component {
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
-                                        <p className="card-text overflow-hidden">{album.albumDescription}</p>
+                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{maxWidth: "150px"}}>{album.albumDescription}</p>
                                         <a href={'/album/' + album._id} className="stretched-link"/>
                                     </div>
                                 </div>
@@ -55,7 +55,7 @@ export default class AlbumsComponent extends React.Component {
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
                                         <h5 className="card-title">{album.albumName}</h5>
-                                        <p className="card-text overflow-hidden">{album.albumDescription}</p>
+                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{maxWidth: "250px"}}>{album.albumDescription}</p>
                                         <a href={'/album/' + album._id} className="stretched-link"/>
                                     </div>
                                 </div>
