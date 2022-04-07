@@ -87,7 +87,7 @@ class AlbumDetails extends React.Component {
                                     <div className="row row-cols-1 row-cols-md-2 mt-1">
                                         <LightgalleryProvider>
                                             {this.state.photos.map((photoObject, index) => (
-                                                <div style={{ maxWidth: "50%", width: "50%", padding: "5px" }} key={index}>
+                                                <div style={{ maxWidth: "50%", width: "40%", padding: "5px" }} key={index}>
                                                     <LightgalleryItem group="any" src={photoObject.photo} >
                                                         <img src={photoObject.thumbnail} alt="thumbnail" style={{ width: "100%" }} />
                                                     </LightgalleryItem>
