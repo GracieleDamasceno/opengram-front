@@ -28,6 +28,8 @@ class AlbumDetails extends React.Component {
         photos: []
     }
 
+    deleteAlbum = this.deleteAlbum.bind(this);
+
     async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
         this.setState({ albumTitle: resp.data.albumName });
@@ -51,12 +53,11 @@ class AlbumDetails extends React.Component {
     }
 
     async deleteAlbum() {
+        console.log(this.state.albumId)
         if (window.confirm("Permanently this album and all of its photos? This operation cannot be undone.")) {
             console.log("Its in")
-            const resp = await api.get("/album/" + this.props.match.params.id);
-            await api.delete("/photos/?id=" + resp.data._id);
+            await api.delete("/album/" + this.state.albumId);
             alert("Album deleted")
-            return <Navigate to={{ pathname: "/albums" }} />;
         }
     }
 
