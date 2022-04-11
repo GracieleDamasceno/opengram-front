@@ -5,6 +5,8 @@ import Modal from '../../components/photos-upload.component.js';
 import { useParams } from 'react-router-dom';
 import dateFormat from "dateformat";
 import Gallery from 'react-grid-gallery';
+import { Navigate } from "react-router-dom";
+
 
 var basePath = require('../../services/Api.js').baseURLHost;
 
@@ -26,13 +28,6 @@ class AlbumDetails extends React.Component {
         photos: []
     }
 
-    showModal = e => {
-        this.setState({
-            showModal: !this.state.showModal
-        });
-        console.log(this.state.showModal)
-    };
-
     async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
         this.setState({ albumTitle: resp.data.albumName });
@@ -42,8 +37,6 @@ class AlbumDetails extends React.Component {
         this.setState({ albumId: resp.data._id });
 
         const photos = await api.get("/photos/?id=" + this.state.albumId);
-        console.log(photos)
-
         var photosObject = [];
 
         photos.data.map(async (element) => {
@@ -55,8 +48,18 @@ class AlbumDetails extends React.Component {
             photosObject.push(photoElement);
         })
         this.setState({ photos: photosObject });
-        console.log(photosObject)
     }
+
+    async deleteAlbum() {
+        if (window.confirm("Permanently this album and all of its photos? This operation cannot be undone.")) {
+            console.log("Its in")
+            const resp = await api.get("/album/" + this.props.match.params.id);
+            await api.delete("/photos/?id=" + resp.data._id);
+            alert("Album deleted")
+            return <Navigate to={{ pathname: "/albums" }} />;
+        }
+    }
+
 
     render() {
         return (
@@ -72,7 +75,8 @@ class AlbumDetails extends React.Component {
                                     <hr></hr>
                                     <div className="row">
                                         <div className='col-4'><p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p></div>
-                                        <div className='col-6'></div>
+                                        <div className='col-4'></div>
+                                        <div className='col-2'><button type="button" className="btn btn-danger" onClick={this.deleteAlbum}>Delete Album</button></div>
                                         <div className='col-2'><Modal albumLocation={this.state.albumFolder} albumId={this.state.albumId} /></div>
                                     </div>
                                     <br></br>
@@ -84,7 +88,7 @@ class AlbumDetails extends React.Component {
                                         <div className="col-2 mt-5"></div>
                                     </div>
                                     <br></br>
-                                    <Gallery images={this.state.photos} enableImageSelection={false} backdropClosesModal={true} showLightboxThumbnails={true} lightboxWidth={2048} rowHeight={200}/>
+                                    <Gallery images={this.state.photos} enableImageSelection={false} backdropClosesModal={true} showLightboxThumbnails={true} lightboxWidth={2048} rowHeight={200} />
                                 </div>
                             </div>
                         </div>
