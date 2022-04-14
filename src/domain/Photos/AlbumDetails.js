@@ -5,7 +5,7 @@ import Modal from '../../components/photos-upload.component.js';
 import { useParams } from 'react-router-dom';
 import dateFormat from "dateformat";
 import Gallery from 'react-grid-gallery';
-import { Navigate } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 
 var basePath = require('../../services/Api.js').baseURLHost;
@@ -55,10 +55,9 @@ class AlbumDetails extends React.Component {
     async deleteAlbum() {
         console.log(this.state.albumId)
         if (window.confirm("Permanently this album and all of its photos? This operation cannot be undone.")) {
-            console.log("Its in")
             await api.delete("/album/" + this.state.albumId);
-            alert("Album deleted")
-        }
+            alert("Album deleted");
+            return <Redirect to="/albums" />        }
     }
 
 
