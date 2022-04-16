@@ -2,13 +2,11 @@ import React from 'react';
 import api from '../../services/Api.js';
 import Header from '../Header/header.component';
 import Modal from '../../components/photos-upload.component.js';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import dateFormat from "dateformat";
 import Gallery from 'react-grid-gallery';
-import { Redirect } from "react-router-dom";
 
-
-var basePath = require('../../services/Api.js').baseURLHost;
+const basePath = require('../../services/Api.js').baseURLHost;
 
 export function withRouter(AlbumDetails) {
     return (props) => {
@@ -18,17 +16,21 @@ export function withRouter(AlbumDetails) {
 }
 
 class AlbumDetails extends React.Component {
-    state = {
-        albumTitle: "",
-        albumDescription: "",
-        albumCreation: "",
-        albumFolder: "",
-        albumId: "",
-        showModal: false,
-        photos: []
-    }
 
-    deleteAlbum = this.deleteAlbum.bind(this);
+    constructor(props) {
+        super(props);
+        this.state = {
+            albumTitle: "",
+            albumDescription: "",
+            albumCreation: "",
+            albumFolder: "",
+            albumId: "",
+            showModal: false,
+            photos: [],
+            wasDeleted: false
+        }
+        this.deleteAlbum = this.deleteAlbum.bind(this);
+    }
 
     async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
@@ -53,15 +55,17 @@ class AlbumDetails extends React.Component {
     }
 
     async deleteAlbum() {
-        console.log(this.state.albumId)
         if (window.confirm("Permanently this album and all of its photos? This operation cannot be undone.")) {
             await api.delete("/album/" + this.state.albumId);
             alert("Album deleted");
-            return <Redirect to="/albums" />        }
+            this.setState({ wasDeleted: true })
+        }
     }
 
-
     render() {
+        if (this.state.wasDeleted) {
+            return <Navigate to={{ pathname: "/albums" }} />;
+        }
         return (
             <div className="container-fluid">
                 <Header />

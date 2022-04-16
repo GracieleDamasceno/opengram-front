@@ -5,7 +5,6 @@ import Header from '../Header/header.component';
 import api from '../../services/Api';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import * as moment from 'moment';
 
 const UpdateProfile = () => {
     const formik = useFormik({

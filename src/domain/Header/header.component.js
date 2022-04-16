@@ -6,7 +6,7 @@ import Session from 'react-session-api';
 export default function HeaderLogin() {
     const logout = async () => {
         Session.clear();
-        const resp = await api.post("/account/logout");
+        // const resp = await api.post("/account/logout");
     }
 
     if (Object.keys(Session.items()).length === 0){
