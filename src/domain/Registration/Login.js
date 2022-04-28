@@ -10,19 +10,19 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         if(Object.keys(Session.items()).length > 0){
-            this.state = {email: "", password: "", isSignedUp: true};
+            this.state = {username: "", password: "", isSignedUp: true};
 
         } else {
-            this.state = {email: "", password: "", isSignedUp: false};
+            this.state = {username: "", password: "", isSignedUp: false};
 
         }
-        this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
-    onChangeEmailAddress(e) {
-        this.setState({ email: e.target.value })
+    onChangeUsername(e) {
+        this.setState({ username: e.target.value })
     }
     onChangePassword(e) {
         this.setState({ password: e.target.value })
@@ -31,23 +31,26 @@ export default class Login extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         const userLoginObject = {
-            email: this.state.email,
+            username: this.state.username,
             password: this.state.password
         };
 
         const sendGetRequest = async () => {
             try {
                 const resp = await api.post("/account/sign-in", userLoginObject);
+                console.log(resp.data)
                 Session.set("id", resp.data.userId);
                 Session.set("firstName", resp.data.firstName);
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
-                Session.set("email", resp.data.email);
+                Session.set("albumPath", resp.data.albumPath);
                 Session.set("albumNumber", resp.data.albumNumber);
+                Session.set("photoNumber", resp.data.photoNumber);
+                Session.set("videosNumber", resp.data.videosNumber);
                 this.setState({ isSignedUp: true });
             } catch (error) {
                 if(error.response.status === 401){
-                    alert("Wrong password or e-mail address!");
+                    alert("Wrong password or username!");
                 }else if(error.response.status === 500){
                     alert("Something went wrong on our side. Please, try again later.");
                 }
@@ -56,7 +59,7 @@ export default class Login extends React.Component {
 
         sendGetRequest();
         
-        this.setState({email: "", password: ""})
+        this.setState({username: "", password: ""})
     }
 
     render() {
@@ -72,8 +75,8 @@ export default class Login extends React.Component {
                             <h3>Log in</h3>
                             <hr></hr>
                             <div className="form-group">
-                                <label>Email</label>
-                                <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
+                                <label>Username</label>
+                                <input type="username" value={this.state.username} onChange={this.onChangeUsername} className="form-control" id="username" placeholder="Enter username" required/>
                             </div>
 
                             <div className="form-group mt-2">
