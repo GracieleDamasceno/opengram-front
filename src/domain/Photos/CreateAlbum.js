@@ -15,6 +15,7 @@ export default class CreateAlbum extends React.Component {
             userId: Session.get("id"),
             albumNumber: Session.get("albumNumber"),
             albumName: "",
+            albumPath: Session.get("albumPath"),
             albumDescription: "",
             photos: "",
             wasCreated: false
@@ -44,7 +45,7 @@ export default class CreateAlbum extends React.Component {
                         albumName: this.state.albumName,
                         albumDescription: this.state.albumDescription,
                         albumNumber: this.state.albumNumber,
-                        albumLocation: "E:/Public/Opengram/Albums/" + this.state.albumNumber
+                        albumLocation: this.state.albumPath
                     }
 
                     formData.append("albumInfo", JSON.stringify(albumInfo));

@@ -43,10 +43,10 @@ export default class Login extends React.Component {
                 Session.set("firstName", resp.data.firstName);
                 Session.set("lastName", resp.data.lastName);
                 Session.set("username", resp.data.username);
-                Session.set("albumPath", resp.data.albumPath);
-                Session.set("albumNumber", resp.data.albumNumber);
-                Session.set("photoNumber", resp.data.photoNumber);
+                Session.set("albumsNumber", resp.data.albumsNumber);
+                Session.set("photosNumber", resp.data.photosNumber);
                 Session.set("videosNumber", resp.data.videosNumber);
+                Session.set("randomCoverPhoto", resp.data.randomCoverPhoto);
                 this.setState({ isSignedUp: true });
             } catch (error) {
                 if(error.response.status === 401){

@@ -4,6 +4,7 @@ import Header from '../Header/header.component';
 import { Navigate } from "react-router-dom";
 import api from '../../services/Api';
 import PasswordStrengthBar from 'react-password-strength-bar';
+const bcrypt = require("bcryptjs");
 
 class UpdateProfile extends React.Component {
 
@@ -14,12 +15,11 @@ class UpdateProfile extends React.Component {
             firstName: Session.get("firstName"),
             lastName: Session.get("lastName"),
             username: Session.get("username"),
+            randomCoverPhoto: Session.get("randomCoverPhoto"),
             password: "",
-            profilePhoto: "",
-            coverPhoto: "",
-            randomCoverPhoto : "",
+            profilePhoto: null,
+            coverPhoto: null,
             wasUpdated: false,
-            disableCoverPhoto: true
         }
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
@@ -36,7 +36,7 @@ class UpdateProfile extends React.Component {
     }
     onChangeFirstName(e) {
         this.setState({ firstName: e.target.value });
-    }    
+    }
     onChangeLastName(e) {
         this.setState({ lastName: e.target.value });
     }
@@ -44,39 +44,64 @@ class UpdateProfile extends React.Component {
         this.setState({ username: e.target.value });
     }
     onChangeProfilePhoto(e) {
-        this.setState({ profilePhoto: e.target.value });
+        let files = e.target.files[0];
+        this.setState({ profilePhoto: files });
     }
     onChangeCoverPhoto(e) {
-        this.setState({ coverPhoto: e.target.value });
+        let files = e.target.files[0];
+        this.setState({ coverPhoto: files });
     }
     onChangeRandomCoverPhoto(e) {
         this.setState({ randomCoverPhoto: e.target.checked });
-        this.setState({ disableCoverPhoto: !this.state.disableCoverPhoto });
+        this.setState({ randomCoverPhoto: !this.state.randomCoverPhoto });
     }
 
-    onSubmit(e) {
+    async onSubmit(e) {
         e.preventDefault();
         const values = {
+            id: this.state.id,
             username: this.state.username,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
-            profilePhoto: this.state.profilePhoto,
-            coverPhoto: this.state.coverPhoto,
             randomCoverPhoto: this.state.randomCoverPhoto
         };
 
-        if(this.state.password !== ""){
-            values.password = this.state.password;
+        if (this.state.password !== "") {
+            values.password = await bcrypt.hash(this.state.password, 10);
         }
 
         const sendGetRequest = async () => {
             try {
-                console.log(values);
-                //const update = await api.patch("/profile/update", values);
-                // Session.set("firstName", update.data.firstName);
-                // Session.set("lastName", update.data.lastName);
-                // Session.set("username", update.data.username);
-                // Session.set("email", update.data.email);
+                const update = await api.patch("/profile/update", values);
+                Session.set("firstName", update.data.firstName);
+                Session.set("lastName", update.data.lastName);
+                Session.set("username", update.data.username);
+                Session.set("randomCoverPhoto", update.data.randomCoverPhoto);
+
+                let albumInfo = {
+                    user: this.state.id
+                }
+
+                if (this.state.coverPhoto !== null) {
+                    var formDataCoverPhoto = new FormData();
+
+                    formDataCoverPhoto.append("albumInfo", JSON.stringify(albumInfo));
+                    formDataCoverPhoto.append("photos", this.state.coverPhoto);
+                    console.log(this.state.coverPhoto)
+                    console.log("this.state.coverPhoto")
+
+                    await api({ method: "post", url: "/photos/cover", data: formDataCoverPhoto, headers: { "Content-Type": "multipart/form-data" } });
+                }
+
+                if (this.state.profilePhoto !== null) {
+                    var formDataProfilePhoto = new FormData();
+
+                    formDataProfilePhoto.append("albumInfo", JSON.stringify(albumInfo));
+                    formDataProfilePhoto.append("photos", this.state.profilePhoto);
+
+                    await api({ method: "post", url: "/photos/profile", data: formDataProfilePhoto, headers: { "Content-Type": "multipart/form-data" } });
+                }
+
                 alert("Profile successfully updated!");
                 this.setState({ wasUpdated: true });
 
@@ -90,7 +115,7 @@ class UpdateProfile extends React.Component {
     }
 
     render() {
-        if(this.state.wasUpdated){
+        if (this.state.wasUpdated) {
             return <Navigate to={{ pathname: "/profile" }} />;
         }
         const { password } = this.state;
@@ -129,9 +154,9 @@ class UpdateProfile extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="col">
-                                                <label htmlFor="password" className="form-label">Password:</label>
+                                                <label htmlFor="password" className="form-label">New Password:</label>
                                                 <input type="password" className="form-control" id="password" name="password" onChange={this.onChangePassword} value={password}></input>
-                                                <PasswordStrengthBar password={password} minLength={4}/>
+                                                <PasswordStrengthBar password={password} minLength={4} />
                                             </div>
                                         </div>
                                     </div>
@@ -142,13 +167,13 @@ class UpdateProfile extends React.Component {
                                         </div>
                                         <div className="input-group mb-3">
                                             <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="randomCoverPhoto" onClick={this.onChangeRandomCoverPhoto} defaultValue={this.state.randomCoverPhoto} defaultChecked={true}/>
+                                                <input className="form-check-input" type="checkbox" id="randomCoverPhoto" onClick={this.onChangeRandomCoverPhoto} defaultValue={this.state.randomCoverPhoto} defaultChecked={true} />
                                                 <label className="form-check-label" htmlFor="randomCoverPhoto"> Use random cover photos (Provided by unsplash.com. Requires internet connection.) </label>
                                             </div>
                                         </div>
                                         <div className="input-group mb-3">
                                             <label className="input-group-text" htmlFor="coverPhoto">Update Cover Photo:</label>
-                                            <input type="file" className="form-control" id="coverPhoto" accept="image/*" name="coverPhoto" disabled={this.state.disableCoverPhoto} onChange={this.onChangeCoverPhoto} ></input>
+                                            <input type="file" className="form-control" id="coverPhoto" accept="image/*" name="coverPhoto" disabled={this.state.randomCoverPhoto} onChange={this.onChangeCoverPhoto}></input>
                                         </div>
                                     </div>
                                     <br></br>
