@@ -34,21 +34,21 @@ class AlbumDetails extends React.Component {
 
     async componentDidMount() {
         const resp = await api.get("/album/" + this.props.match.params.id);
-        this.setState({ albumTitle: resp.data.albumName });
-        this.setState({ albumDescription: resp.data.albumDescription });
-        this.setState({ albumCreation: dateFormat(resp.data.albumCreation, "mmmm dS yyyy, h:MM:ss TT") });
-        this.setState({ albumFolder: resp.data.albumFolder });
+        this.setState({ albumTitle: resp.data.name });
+        this.setState({ albumDescription: resp.data.description });
+        this.setState({ albumCreation: dateFormat(resp.data.creationDate, "mmmm dS yyyy, h:MM:ss TT") });
+        this.setState({ albumFolder: resp.data.path });
         this.setState({ albumId: resp.data._id });
 
-        const photos = await api.get("/photos/?id=" + this.state.albumId);
+        const photos = resp.data.photos
         var photosObject = [];
 
-        photos.data.map(async (element) => {
+        photos.map(async (element) => {
             var photoElement = {};
-            photoElement.src = "/photos/file/?path=" + element.photoPath;
-            photoElement.thumbnail = basePath + "/album/thumbnail/?photoThumbnail=" + element._id
-            photoElement.thumbnailWidth = element.photoThumbnailWidth;
-            photoElement.thumbnailHeight = element.photoThumbnailHeight;
+            photoElement.src = "/photos/file/?albumId=" + resp.data._id + "&photoId=" + element._id;
+            photoElement.thumbnail = basePath + "/album/thumbnail/?photoId=" + element._id + "&albumId=" + this.state.albumId
+            photoElement.thumbnailWidth = element.thumbnailWidth;
+            photoElement.thumbnailHeight = element.thumbnailHeight;
             photosObject.push(photoElement);
         })
         this.setState({ photos: photosObject });

@@ -9,18 +9,20 @@ const bcrypt = require("bcryptjs");
 class UpdateProfile extends React.Component {
 
     constructor(props) {
+        
         super(props);
         this.state = {
             id: Session.get("id"),
             firstName: Session.get("firstName"),
             lastName: Session.get("lastName"),
             username: Session.get("username"),
-            randomCoverPhoto: Session.get("randomCoverPhoto"),
+            randomCoverPhoto: (Session.get("randomCoverPhoto") === "true") ,
             password: "",
             profilePhoto: null,
             coverPhoto: null,
             wasUpdated: false,
         }
+        console.log(this.state.randomCoverPhoto)
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeFirstName = this.onChangeFirstName.bind(this);
@@ -52,7 +54,6 @@ class UpdateProfile extends React.Component {
         this.setState({ coverPhoto: files });
     }
     onChangeRandomCoverPhoto(e) {
-        this.setState({ randomCoverPhoto: e.target.checked });
         this.setState({ randomCoverPhoto: !this.state.randomCoverPhoto });
     }
 
@@ -167,7 +168,7 @@ class UpdateProfile extends React.Component {
                                         </div>
                                         <div className="input-group mb-3">
                                             <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" id="randomCoverPhoto" onClick={this.onChangeRandomCoverPhoto} defaultValue={this.state.randomCoverPhoto} defaultChecked={true} />
+                                                <input className="form-check-input" type="checkbox" id="randomCoverPhoto" onClick={this.onChangeRandomCoverPhoto} defaultValue={this.state.randomCoverPhoto} defaultChecked={this.state.randomCoverPhoto} />
                                                 <label className="form-check-label" htmlFor="randomCoverPhoto"> Use random cover photos (Provided by unsplash.com. Requires internet connection.) </label>
                                             </div>
                                         </div>

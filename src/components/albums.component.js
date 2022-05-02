@@ -10,20 +10,21 @@ export default class AlbumsComponent extends React.Component {
         thumbnail: ""
     }
     async componentDidMount() {
-        var resp;
+        var album;
+        var fullAlbums = [];
+
         if (this.props.albumsSize === "4") {
-            resp = await api.get("/album", { params: { id: Session.get("id"), pagination: this.props.albumsSize, page: 1 } });
+            album = await api.get("/album/user/" + Session.get("id"), { params: { pagination: this.props.albumsSize, page: 1 } });
         } else {
-            resp = await api.get("/album", { params: { id: Session.get("id") } });
+            album = await api.get("/album/user/" + Session.get("id"));
         }
-        const data = resp.data;
-        var fullAlbums = []
+        
+        const data = album.data;
         for (var element of data) {
-            let url = basePath + "/album/thumbnail/?albumThumbnail=" + element._id;
-            element.thumbnail = url;
+            element.thumbnail = basePath + "/album/thumbnail/?album=" + element._id;
             fullAlbums.push(element);
         }
-        this.setState({ albums: resp.data });
+        this.setState({ albums: data });
     }
     render() {
         if (this.props.albumsSize === "4") {
@@ -35,9 +36,9 @@ export default class AlbumsComponent extends React.Component {
                                 <div className="card shadow p-3 mb-5 bg-white rounded">
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
-                                        <h5 className="card-title">{album.albumName}</h5>
-                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{maxWidth: "100%"}}>{album.albumDescription}</p>
-                                        <a href={'/album/' + album._id} className="stretched-link"/>
+                                        <h5 className="card-title">{album.name}</h5>
+                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{ maxWidth: "100%" }}>{album.description}</p>
+                                        <a href={'/album/' + album._id} className="stretched-link" />
                                     </div>
                                 </div>
                             </div>
@@ -54,9 +55,9 @@ export default class AlbumsComponent extends React.Component {
                                 <div className="card shadow p-3 mb-5 bg-white rounded">
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
-                                        <h5 className="card-title">{album.albumName}</h5>
-                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{maxWidth: "100%"}}>{album.albumDescription}</p>
-                                        <a href={'/album/' + album._id} className="stretched-link"/>
+                                        <h5 className="card-title">{album.name}</h5>
+                                        <p className="card-text overflow-hidden d-inline-block text-truncate" style={{ maxWidth: "100%" }}>{album.description}</p>
+                                        <a href={'/album/' + album._id} className="stretched-link" />
                                     </div>
                                 </div>
                             </div>
