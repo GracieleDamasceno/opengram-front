@@ -22,7 +22,6 @@ class UpdateProfile extends React.Component {
             coverPhoto: null,
             wasUpdated: false,
         }
-        console.log(this.state.randomCoverPhoto)
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onChangeFirstName = this.onChangeFirstName.bind(this);
@@ -85,18 +84,14 @@ class UpdateProfile extends React.Component {
 
                 if (this.state.coverPhoto !== null) {
                     var formDataCoverPhoto = new FormData();
-
                     formDataCoverPhoto.append("albumInfo", JSON.stringify(albumInfo));
                     formDataCoverPhoto.append("photos", this.state.coverPhoto);
-                    console.log(this.state.coverPhoto)
-                    console.log("this.state.coverPhoto")
 
                     await api({ method: "post", url: "/photos/cover", data: formDataCoverPhoto, headers: { "Content-Type": "multipart/form-data" } });
                 }
 
                 if (this.state.profilePhoto !== null) {
                     var formDataProfilePhoto = new FormData();
-
                     formDataProfilePhoto.append("albumInfo", JSON.stringify(albumInfo));
                     formDataProfilePhoto.append("photos", this.state.profilePhoto);
 

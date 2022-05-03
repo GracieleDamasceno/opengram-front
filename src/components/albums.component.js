@@ -1,7 +1,7 @@
 import Session from 'react-session-api'
 import React from 'react';
 import api from '../services/Api.js';
-var basePath = require('../services/Api.js').baseURLHost;
+const basePath = require('../services/Api.js').baseURLHost;
 
 export default class AlbumsComponent extends React.Component {
 
@@ -38,7 +38,7 @@ export default class AlbumsComponent extends React.Component {
                                     <div className="card-body">
                                         <h5 className="card-title">{album.name}</h5>
                                         <p className="card-text overflow-hidden d-inline-block text-truncate" style={{ maxWidth: "100%" }}>{album.description}</p>
-                                        <a href={'/album/' + album._id} className="stretched-link" />
+                                        <a href={'/album/' + album._id} alt="Album Thumbnail" className="stretched-link" />
                                     </div>
                                 </div>
                             </div>
