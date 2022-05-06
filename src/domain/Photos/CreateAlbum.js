@@ -17,12 +17,12 @@ export default class CreateAlbum extends React.Component {
             albumName: "",
             albumPath: Session.get("albumPath"),
             albumDescription: "",
-            photos: "",
+            photo: "",
             wasCreated: false
         }
     }
     onFileChange(e) {
-        this.setState({ photos: e.target.files })
+        this.setState({ photo: e.target.files })
     }
 
     onAlbumNameChange(e) {
@@ -41,26 +41,21 @@ export default class CreateAlbum extends React.Component {
                 try {
                     var formData = new FormData();
                     let albumInfo = {
-                        userId: this.state.userId,
+                        user: this.state.userId,
                         albumName: this.state.albumName,
                         albumDescription: this.state.albumDescription,
                         albumNumber: this.state.albumNumber,
-                        albumLocation: this.state.albumPath
                     }
 
                     formData.append("albumInfo", JSON.stringify(albumInfo));
-                    for (const key of Object.keys(this.state.photos)) {
-                        formData.append("photos", this.state.photos[key])
-                    }
+                    formData.append("photo", this.state.photo[0]);
 
-                    const resp = await api({ method: "post", url: "/album/create/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
-                    Session.set("albumNumber", resp.data.albumNumber);
-
+                    await api({ method: "post", url: "/album/create/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
                     alert("Album successfully created!");
                     this.setState({ wasCreated: true });
                 } catch (error) {
                     alert("Something went wrong on our side. Please, try again later.");
-                    console.log(JSON.stringify(error))
+                    console.log(JSON.stringify(error));
                 }
             };
 
@@ -87,21 +82,20 @@ export default class CreateAlbum extends React.Component {
                             <div className="col-10 mt-5 mb-5">
                                 <h4>Create Photo Album</h4>
                                 <hr></hr>
-                                <br></br>
                                 <form className="mt-5 mb-5" onSubmit={this.onSubmit} encType="multipart/form-data">
                                     <div className="mb-5">
                                         <div className="col">
                                             <label htmlFor="albumName" className="form-label">Album Name:</label>
-                                            <input type="text" className="form-control" id="albumName" name="albumName" onChange={this.onAlbumNameChange} required/>
+                                            <input type="text" className="form-control" id="albumName" name="albumName" onChange={this.onAlbumNameChange} required />
                                         </div>
                                     </div>
                                     <div className="mb-5 form-floating">
-                                        <textarea className="form-control" placeholder="Album Description" id="albumDescription" name="albumDescription" style={{ height: "150px" }} onChange={this.onAlbumDescriptionChange} required/>
+                                        <textarea className="form-control" placeholder="Album Description" id="albumDescription" name="albumDescription" style={{ height: "150px" }} onChange={this.onAlbumDescriptionChange} required />
                                         <label htmlFor="albumDescription">Album Description</label>
                                     </div>
                                     <div className="input-group mb-3">
                                         <label className="input-group-text" htmlFor="photos">Add Album Cover:</label>
-                                        <input type="file" className="form-control" id="photos" accept="image/*" name="photos" onChange={this.onFileChange} required/>
+                                        <input type="file" className="form-control" id="photos" accept="image/*" name="photo" onChange={this.onFileChange} required />
                                     </div>
                                     <div className="row mt-5">
                                         <div className="col-10"></div>

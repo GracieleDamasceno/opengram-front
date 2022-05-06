@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from 'react-bootstrap';
 import api from '../services/Api.js';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 
 export default function PhotoUpload(props) {
@@ -20,8 +21,8 @@ export default function PhotoUpload(props) {
                 try {
                     var formData = new FormData();
                     let albumInfo = {
-                        albumLocation: props.albumLocation,
-                        id: props.albumId
+                        id: props.albumId,
+                        user: props.user
                     }
 
                     formData.append("albumInfo", JSON.stringify(albumInfo));
@@ -29,7 +30,7 @@ export default function PhotoUpload(props) {
                         formData.append("photos", files[i]);
                     }
 
-                    await api({ method: "post", url: "/photos/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
+                    await api({ method: "post", url: "/photo/", data: formData, headers: { "Content-Type": "multipart/form-data" } });
                     
                     alert("Photos uploaded successfully!");
                     window.location.reload();
@@ -52,10 +53,10 @@ export default function PhotoUpload(props) {
     };
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>Add Photos</Button>
+            <Button variant="primary" onClick={handleShow}><i class="bi bi-folder-plus"></i></Button>
             <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Upload Media</Modal.Title>
+                    <Modal.Title>Add Media</Modal.Title>
                 </Modal.Header>
                 <Form onSubmit={handleSubmit} id="uploadForm">
                     <Modal.Body>

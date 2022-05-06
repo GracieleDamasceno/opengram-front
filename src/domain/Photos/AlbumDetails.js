@@ -5,6 +5,7 @@ import Modal from '../../components/photos-upload.component.js';
 import { useParams, Navigate } from 'react-router-dom';
 import dateFormat from "dateformat";
 import Gallery from 'react-grid-gallery';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const basePath = require('../../services/Api.js').baseURLHost;
 
@@ -23,7 +24,6 @@ class AlbumDetails extends React.Component {
             albumTitle: "",
             albumDescription: "",
             albumCreation: "",
-            albumFolder: "",
             albumId: "",
             showModal: false,
             photos: [],
@@ -37,16 +37,16 @@ class AlbumDetails extends React.Component {
         this.setState({ albumTitle: resp.data.name });
         this.setState({ albumDescription: resp.data.description });
         this.setState({ albumCreation: dateFormat(resp.data.creationDate, "mmmm dS yyyy, h:MM:ss TT") });
-        this.setState({ albumFolder: resp.data.path });
         this.setState({ albumId: resp.data._id });
+        this.setState({ user: resp.data.owner });
 
         const photos = resp.data.photos
         var photosObject = [];
 
         photos.map(async (element) => {
             var photoElement = {};
-            photoElement.src = "/photos/file/?albumId=" + resp.data._id + "&photoId=" + element._id;
-            photoElement.thumbnail = basePath + "/album/thumbnail/?photoId=" + element._id + "&albumId=" + this.state.albumId
+            photoElement.src = "/photo/file/?album=" + resp.data._id + "&photo=" + element._id;
+            photoElement.thumbnail = basePath + "/album/thumbnail/?photo=" + element._id + "&album=" + this.state.albumId
             photoElement.thumbnailWidth = element.thumbnailWidth;
             photoElement.thumbnailHeight = element.thumbnailHeight;
             photosObject.push(photoElement);
@@ -77,20 +77,24 @@ class AlbumDetails extends React.Component {
                                 <div className="col-10 mt-5 mb-5">
                                     <h4>{this.state.albumTitle}</h4>
                                     <hr></hr>
-                                    <div className="row">
+                                    <div className="row">   
                                         <div className='col-4'><p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p></div>
-                                        <div className='col-4'></div>
-                                        <div className='col-2'><button type="button" className="btn btn-danger" onClick={this.deleteAlbum}>Delete Album</button></div>
-                                        <div className='col-2'><Modal albumLocation={this.state.albumFolder} albumId={this.state.albumId} /></div>
-                                    </div>
-                                    <br></br>
-                                    <div className="row ">
-                                        <div className='col-2'></div>
-                                        <div className='col-8 text-center text-break mb-5 mt-5'>
-                                            {this.state.albumDescription}
+                                        <div className='col-3'></div>
+                                        <div className='col-5 d-flex align-items-end justify-content-end'>
+                                            <Modal user={this.state.user} albumId={this.state.albumId} />
+                                            <button type="button" className="btn btn-info" onClick={this.deleteAlbum}><i class="bi bi-pencil-square"></i></button>
+                                            <button type="button" className="btn btn-danger" onClick={this.deleteAlbum}><i class="bi bi-trash3-fill"></i></button>
                                         </div>
-                                        <div className="col-2 mt-5"></div>
                                     </div>
+                                    <div className="row">
+                                        <div className='col-1'></div>
+                                        <div className='lead mt-3'>
+                                            <br></br>
+                                            <p className='text-justify'>{this.state.albumDescription}</p>
+                                        </div>
+                                        <div className="col-1"></div>
+                                    </div>
+                                    <hr></hr>
                                     <br></br>
                                     <Gallery images={this.state.photos} enableImageSelection={false} backdropClosesModal={true} showLightboxThumbnails={true} lightboxWidth={2048} rowHeight={200} />
                                 </div>

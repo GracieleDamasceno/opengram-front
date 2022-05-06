@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from '../Header/header.component';
 import AlbumsComponent from '../../components/albums.component';
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 
 export default class Albums extends React.Component {
     render() {
@@ -19,7 +21,7 @@ export default class Albums extends React.Component {
                                     <div className="container">
                                         <div className="row">
                                             <div className="d-flex flex-row-reverse mb-5">
-                                                <a href="/create-album" className="btn btn-primary">Create new photo album</a>
+                                                <a href="/create-album" className="btn btn-primary"><i class="bi bi-plus-lg"></i></a>
                                             </div>
                                         </div>
                                         <AlbumsComponent albumsSize={"9"}/>
