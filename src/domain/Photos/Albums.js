@@ -21,10 +21,10 @@ export default class Albums extends React.Component {
                                     <div className="container">
                                         <div className="row">
                                             <div className="d-flex flex-row-reverse mb-5">
-                                                <a href="/create-album" className="btn btn-primary"><i class="bi bi-plus-lg"></i></a>
+                                                <a href="/create-album" className="btn btn-primary"><i className="bi bi-plus-lg"></i></a>
                                             </div>
                                         </div>
-                                        <AlbumsComponent albumsSize={"9"}/>
+                                        <AlbumsComponent albumsSize={9}/>
                                     </div>
                                 </div>
                             </div>

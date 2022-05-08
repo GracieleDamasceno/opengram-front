@@ -56,7 +56,7 @@ export default class Profile extends React.Component {
                   <h5 className="mb-0">Latest Albums</h5><a href="/albums" className="btn btn-link text-muted">Show all</a>
                 </div>
                 <div className="row">
-                  <AlbumsComponent albumsSize={"4"} />
+                  <AlbumsComponent albumsSize={4} />
                 </div>
               </div>
             </div>

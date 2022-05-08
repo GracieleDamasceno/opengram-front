@@ -1,5 +1,4 @@
 import React from "react";
-import api from '../../services/Api';
 import { Link, Navigate } from "react-router-dom";
 import Session from 'react-session-api';
 

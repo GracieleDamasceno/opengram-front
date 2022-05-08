@@ -94,7 +94,6 @@ export default class Login extends React.Component {
                             <div className="form-group mt-2">
                                 <button type="submit" className="btn btn-success btn-lg float-right">Sign in</button>
                             </div>
-                            <p className="forgot-password text-right">Forgot <a href="#">password?</a></p>
                         </form>
                     </div>
                 </div>
