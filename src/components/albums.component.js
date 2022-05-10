@@ -3,7 +3,7 @@ import React from 'react';
 import api from '../services/Api.js';
 const basePath = require('../services/Api.js').baseURLHost;
 
-export default class AlbumsComponent extends React.Component {
+class AlbumsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,19 +14,21 @@ export default class AlbumsComponent extends React.Component {
         }
     }
 
-    nextPage = async () => {
-        this.setState({skip: this.state.skip + 1});
-        this.loadAlbums();
+    nextPage = () => {
+        this.setState({ skip: this.state.skip + 1 },
+            () => this.loadAlbums());
     }
 
-    previousPage = async () => {
+    previousPage = () => {
         if (this.state.skip > 1) {
-            this.setState({skip: this.state.skip - 1});
+            this.setState({ skip: this.state.skip - 1 },
+                () => this.loadAlbums());
         }
-        this.loadAlbums();
     }
 
     async loadAlbums() {
+        console.log(this.state.skip)
+
         var albumsInfo;
         var completeAlbums = [];
 
@@ -34,6 +36,11 @@ export default class AlbumsComponent extends React.Component {
             albumsInfo = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, } });
         } else {
             albumsInfo = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, skip: this.state.skip } });
+        }
+
+        //Add logic to disable pagination if next element
+        if (albumsInfo.data === undefined || albumsInfo.data.length === 0) {
+            return;
         }
 
         const data = albumsInfo.data;
@@ -47,6 +54,7 @@ export default class AlbumsComponent extends React.Component {
     async componentDidMount() {
         this.loadAlbums()
     }
+
     render() {
         if (this.props.albumsSize === 4) {
             return (
@@ -99,3 +107,4 @@ export default class AlbumsComponent extends React.Component {
         }
     }
 }
+export default AlbumsComponent;
