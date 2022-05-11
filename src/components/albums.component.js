@@ -1,6 +1,7 @@
 import Session from 'react-session-api'
 import React from 'react';
 import api from '../services/Api.js';
+import dateFormat from "dateformat";
 const basePath = require('../services/Api.js').baseURLHost;
 
 class AlbumsComponent extends React.Component {
@@ -10,13 +11,17 @@ class AlbumsComponent extends React.Component {
             albums: [],
             thumbnail: "",
             skip: 1,
-            disablePrevious: true
+            totalPages: 0,
+            disablePrevious: true,
+            disableNext: false
         }
     }
 
     nextPage = () => {
-        this.setState({ skip: this.state.skip + 1 },
-            () => this.loadAlbums());
+        if (this.state.skip < this.state.totalPages) {
+            this.setState({ skip: this.state.skip + 1 },
+                () => this.loadAlbums());
+        }
     }
 
     previousPage = () => {
@@ -27,28 +32,36 @@ class AlbumsComponent extends React.Component {
     }
 
     async loadAlbums() {
-        console.log(this.state.skip)
-
-        var albumsInfo;
-        var completeAlbums = [];
-
         if (this.props.albumsSize === 4) {
-            albumsInfo = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, } });
+            const response = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, } });
+            const data = response.data;
+            for (var album of data) {
+                album.thumbnail = basePath + "/album/thumbnail/?album=" + album._id;
+            }
+            this.setState({ albums: data });
         } else {
-            albumsInfo = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, skip: this.state.skip } });
-        }
+            const response = await api.get("/album/user/" + Session.get("id"), { params: { limit: this.props.albumsSize, skip: this.state.skip } });
+            const data = response.data.albums;
+            const pagination = response.data.pagination;
+            if (pagination) {
+                this.setState({ totalPages: pagination.totalPages });
 
-        //Add logic to disable pagination if next element
-        if (albumsInfo.data === undefined || albumsInfo.data.length === 0) {
-            return;
+                if (this.state.skip === 1) {
+                    this.setState({ disablePrevious: true });
+                } else if (this.state.skip > 1) {
+                    this.setState({ disablePrevious: false });
+                }
+                if (this.state.skip === this.state.totalPages) {
+                    this.setState({ disableNext: true });
+                } else {
+                    this.setState({ disableNext: false });
+                }
+            }
+            for (var album of data) {
+                album.thumbnail = basePath + "/album/thumbnail/?album=" + album._id;
+            }
+            this.setState({ albums: data });
         }
-
-        const data = albumsInfo.data;
-        for (var album of data) {
-            album.thumbnail = basePath + "/album/thumbnail/?album=" + album._id;
-            completeAlbums.push(album);
-        }
-        this.setState({ albums: data });
     }
 
     async componentDidMount() {
@@ -85,6 +98,8 @@ class AlbumsComponent extends React.Component {
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
                                         <h5 className="card-title">{album.name}</h5>
+                                        <p className="card-text"><small class="text-muted">{dateFormat(album.creationDate, "mmmm dS yyyy")}</small></p>
+                                        <hr></hr>
                                         <p className="card-text overflow-hidden d-inline-block text-truncate" style={{ maxWidth: "100%" }}>{album.description}</p>
                                         <a href={'/album/' + album._id} className="stretched-link" />
                                     </div>
@@ -95,10 +110,10 @@ class AlbumsComponent extends React.Component {
                     <nav aria-label="Album Navigation">
                         <ul className="pagination justify-content-end">
                             <li className="page-item">
-                                <button className="page-link" onClick={this.previousPage}>Previous</button>
+                                {!this.state.disablePrevious ? <button className="page-link" onClick={this.previousPage}>Previous</button> : null}
                             </li>
                             <li className="page-item">
-                                <button className="page-link" onClick={this.nextPage}>Next</button>
+                                {!this.state.disableNext ? <button className="page-link" onClick={this.nextPage}>Next</button> : null}
                             </li>
                         </ul>
                     </nav>
