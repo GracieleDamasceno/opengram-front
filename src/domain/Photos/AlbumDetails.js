@@ -1,7 +1,8 @@
 import React from 'react';
 import api from '../../services/Api.js';
 import Header from '../Header/header.component';
-import Modal from '../../components/photos-upload.component.js';
+import AlbumUpload from '../../components/photos-upload.component.js';
+import AlbumEdit from '../../components/album-edit.component.js';
 import { useParams, Navigate } from 'react-router-dom';
 import dateFormat from "dateformat";
 import Gallery from 'react-grid-gallery';
@@ -60,6 +61,14 @@ class AlbumDetails extends React.Component {
             alert("Album deleted");
             this.setState({ wasDeleted: true })
         }
+    }   
+    
+    async editAlbum() {
+        if (window.confirm("Permanently this album and all of its photos? This operation cannot be undone.")) {
+            await api.delete("/album/" + this.state.albumId);
+            alert("Album deleted");
+            this.setState({ wasDeleted: true })
+        }
     }
 
     render() {
@@ -81,9 +90,9 @@ class AlbumDetails extends React.Component {
                                         <div className='col-4'><p className="text-start"> <b>Created at:</b> {this.state.albumCreation}</p></div>
                                         <div className='col-3'></div>
                                         <div className='col-5 d-flex align-items-end justify-content-end'>
-                                            <Modal user={this.state.user} albumId={this.state.albumId} />
-                                            <button type="button" className="btn btn-info" onClick={this.deleteAlbum}><i class="bi bi-pencil-square"></i></button>
-                                            <button type="button" className="btn btn-danger" onClick={this.deleteAlbum}><i class="bi bi-trash3-fill"></i></button>
+                                            <AlbumUpload user={this.state.user} albumId={this.state.albumId} />
+                                            <AlbumEdit albumTitle={this.state.albumTitle} albumDescription={this.state.albumDescription} albumId={this.state.albumId} />
+                                            <button type="button" className="btn btn-danger" onClick={this.deleteAlbum}><i className="bi bi-trash3-fill"></i></button>
                                         </div>
                                     </div>
                                     <div className="row">
