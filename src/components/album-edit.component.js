@@ -5,11 +5,12 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function AlbumEdit(props) {
     const [show, setShow] = useState(false);
-    const [name, setName] = useState(props.albumTitle);
-    const [description, setDescription] = useState(props.albumDescription);
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleName = (e) => {setName(e.target.value); console.log(name)}
+    const handleName = (e) => setName(e.target.value);
     const handleDescription = (e) => setDescription(e.target.value);
 
     const handleSubmit = (e) => {
@@ -17,13 +18,18 @@ export default function AlbumEdit(props) {
         try {
             const editAlbum = async () => {
                 try {
-                   
-                    let albumUpdate = {};
-                    albumUpdate.name = name;
-                    albumUpdate.description = description;
+                    var albumUpdate = {};
+                    if (name) {
+                        albumUpdate.name = name;
+                    } 
+                    if (description) {
+                        albumUpdate.description = description;
+                    }
+                    if (Object.keys(albumUpdate).length === 0) {
+                        return;
+                    }
 
-                    console.log(albumUpdate);
-                    await api.post("/photo/album/" + props.albumId, albumUpdate);     
+                    await api.patch("/album/" + props.albumId, albumUpdate);
 
                     alert("Album updated successfully!");
                     window.location.reload();
