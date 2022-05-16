@@ -98,7 +98,7 @@ class AlbumsComponent extends React.Component {
                                     <img src={album.thumbnail} className="card-img-top" alt="thumbnail" width="750" />
                                     <div className="card-body">
                                         <h5 className="card-title">{album.name}</h5>
-                                        <p className="card-text"><small class="text-muted">{dateFormat(album.creationDate, "mmmm dS yyyy")}</small></p>
+                                        <p className="card-text"><small className="text-muted">{dateFormat(album.creationDate, "mmmm dS yyyy")}</small></p>
                                         <hr></hr>
                                         <p className="card-text overflow-hidden d-inline-block text-truncate" style={{ maxWidth: "100%" }}>{album.description}</p>
                                         <a href={'/album/' + album._id} className="stretched-link" />

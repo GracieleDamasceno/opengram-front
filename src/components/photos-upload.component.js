@@ -53,7 +53,7 @@ export default function PhotoUpload(props) {
     };
     return (
         <>
-            <Button variant="primary" onClick={handleShow}><i class="bi bi-folder-plus"></i></Button>
+            <Button variant="primary" onClick={handleShow}><i className="bi bi-folder-plus"></i></Button>
             <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Media</Modal.Title>
