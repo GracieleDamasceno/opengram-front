@@ -1,0 +1,5 @@
+node_modules
+.lh
+README.md
+.dockerignore
+Dockerfile
