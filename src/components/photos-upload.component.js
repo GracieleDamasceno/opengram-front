@@ -48,7 +48,6 @@ export default function PhotoUpload(props) {
                 alert("Something went wrong on our side. Please, try again later.");
             }
         }
-        console.log("Form was submitted, now the modal can be closed");
         handleClose();
     };
     return (

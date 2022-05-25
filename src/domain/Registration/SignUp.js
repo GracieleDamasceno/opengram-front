@@ -6,11 +6,10 @@ import Header from "../Header/header-no-login.component.js"
 export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {firstName: "", lastName: "", username: "", email: "", password: "", successfulSignUp: false};
+        this.state = {firstName: "", lastName: "", username: "",  password: "", successfulSignUp: false};
         this.onChangeFirstName = this.onChangeFirstName.bind(this);
         this.onChangeLastName = this.onChangeLastName.bind(this);
         this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -23,9 +22,6 @@ export default class SignUp extends React.Component {
     onChangeUsername(e) {
         this.setState({ username: e.target.value })
     }
-    onChangeEmailAddress(e) {
-        this.setState({ email: e.target.value })
-    }
     onChangePassword(e) {
         this.setState({ password: e.target.value })
     }
@@ -37,7 +33,6 @@ export default class SignUp extends React.Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             username: this.state.username,
-            email: this.state.email,
             password: this.state.password
         };
 
@@ -62,7 +57,7 @@ export default class SignUp extends React.Component {
 
         sendGetRequest();
         
-        this.setState({firstName:"", lastName:"", username:"", email: "", password: ""});
+        this.setState({firstName:"", lastName:"", username:"", password: ""});
     }
 
     render() {
@@ -84,11 +79,6 @@ export default class SignUp extends React.Component {
                     <div className="form-group mt-2">
                         <label>Last name</label>
                         <input type="text" value={this.state.lastName} onChange={this.onChangeLastName} className="form-control" id="lastName" placeholder="Last name" required/>
-                    </div>
-
-                    <div className="form-group mt-2">
-                        <label>Email</label>
-                        <input type="email" value={this.state.email} onChange={this.onChangeEmailAddress} className="form-control" id="email" placeholder="Enter email" required/>
                     </div>
 
                     <div className="form-group mt-2">
